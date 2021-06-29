@@ -13,4 +13,8 @@ while i <= 10: # 조건
     print(i, end=' ')
     i = i + 1
 
-print(i)
+
+# 초기값이 없는 경우
+# 증가감이 없는 경우
+while 3 > 1:
+    print("test", end = '')
