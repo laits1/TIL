@@ -5,5 +5,5 @@
 # 9 10 11 12
 for i in range(3):
     for j in range(4):
-        print(f"{i+j+1} ", end=" ")
+        print(f"{j} ", end=" ")
     print(" ")
