@@ -69,5 +69,28 @@ print(max(n))
 print(min(char))
 print(max(char))
 
-print(min(n_char))
-print(max(n_char))
+# 복합 자료형 인 경우, max, min 함수 사용 불가
+#print(min(n_char)) # 에러
+#print(max(n_char)) # 에러
+
+##in / not in (포함여부 판단후 True/False로 반환)
+num = [1,2,3,4,5]
+result = 2 in num       # num에 2가 있니?
+print(result)           # True
+
+result = 2 not in num   # num에 2가 없니?
+print(result)           # False
+
+
+## 리스트 일치 검사
+# 비교 연산자를 사용해서 2개의 리스트 비교 (==, !=, >=, <=, <, >)
+# 첫번째 요소부터 비교 시작
+# 첫번째 요소의 비교에서 결과가 False면
+# 더이상 비교하지 않고 첫번째 요소가 동일하면 두번째 요소 비교.
+# 리스트 안의 모든 요소 비교 결과가 True 면 : True 반환
+
+list1 = [5,2,3]
+list2 = [1,2,3]
+print("")
+print(list1>=list2)
+
