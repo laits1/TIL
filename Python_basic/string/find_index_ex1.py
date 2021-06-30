@@ -13,3 +13,5 @@ if email.find("@") == -1 \
     print(f"입력한 이메일 : {email}")
 else :                                              # 올바른 경우
     print(f"입력한 이메일 : {email}")
+
+    
