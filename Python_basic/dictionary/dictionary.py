@@ -9,7 +9,7 @@
 # key는 숫자, 문자 다 가능
 # key:value 한 쌍을 item이라고 한다
 # 쉼표(,)로 item 구분
-
+# dic[key] = value
 
 
 
@@ -19,7 +19,7 @@ print(type(d))
 
 # 두 번째 요소(item) 추가 (key-2, value-'b')
 d[2] = 'b'  # 주의 2는 인덱스가 아님.
-print(d)
+print(f"요소추가 {d}")
  
 d['test'] = 'ValueTest'
 print(d)
