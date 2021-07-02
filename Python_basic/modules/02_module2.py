@@ -1,5 +1,5 @@
-import module.a
-import module.b
+# import module.a
+# import module.b
 
 from module import a
 from module import b
