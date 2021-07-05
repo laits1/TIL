@@ -63,3 +63,7 @@ print(s) # set() : 빈 집합의 의미
 
 # 집합 자체 삭제
 del s # 변수 삭제
+
+
+s = {1,2,3,4}
+print(3 in s) # True

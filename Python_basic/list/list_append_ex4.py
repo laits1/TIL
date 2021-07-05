@@ -4,4 +4,4 @@ while True:
     if list[-1] == '':
         break
 for i in list:
-    print(f"{i}", end=" ")
+    print(f"등록된 상품 : {i}", end=" ")
