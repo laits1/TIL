@@ -18,5 +18,5 @@ def order():
 amount, discount, total = order()
 print("-------------")
 print(f"주문액 : {amount}원")
-print(f"할인액 : {discount}개")   
+print(f"할인액 : {discount}원")   
 print(f"지불액 : {total}원")

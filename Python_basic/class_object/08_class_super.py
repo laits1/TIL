@@ -41,5 +41,6 @@ bob.work(60)
 lee = Student('Lee', 19)
 lee.eat('NOODLE')
 lee.sleep(60)
-lee.work(30) # 부모클래스의
+lee.work(30) # 부모클래스의 work() 메서드와 하위클래스의 work 메서드가 같이 호출하게 됨
+
 
