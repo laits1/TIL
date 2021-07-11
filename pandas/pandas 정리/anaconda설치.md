@@ -1,6 +1,13 @@
 # anaconda 설치
 1. 아나 콘다 다운로드 [Anaconda Download](https://www.anaconda.com/products/individual)  
-2.  <img src="https://github.com/laits1/TIL/blob/master/pandas/md_pic/anaconda%20down1.png?raw=true" style="zoom:100%;" />체크 후 설치 진행후 설치 완료
+
+2.  체크 후 설치 진행후 설치 완료
+
+   <img src="https://github.com/laits1/TIL/blob/master/pandas/md_pic/anaconda%20down1.png?raw=true" style="zoom:100%;" />
+
+
+
+
 
 
 
