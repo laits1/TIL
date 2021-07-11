@@ -1,10 +1,6 @@
----
-typora-root-url: ..\md_pic
----
-
 # anaconda 설치
 1. 아나 콘다 다운로드 [Anaconda Download](https://www.anaconda.com/products/individual)  
-2. ![](anaconda down1.png)체크 후 설치 진행후 설치 완료
+2.  ![](C:\Users\SDG\Documents\TIL\TIL\pandas\md_pic\anaconda down1.png)체크 후 설치 진행후 설치 완료
 
 
 
