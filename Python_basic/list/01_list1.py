@@ -49,3 +49,4 @@ a1,b1,c1 = nums1
 
 print(nums1)
 print(a1,b1,c1)
+
