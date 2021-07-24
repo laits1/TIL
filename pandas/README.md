@@ -15,11 +15,11 @@
 
 4. [value 값 접근](#value-값-접근)
 
-5. [value 값 갱신](#value 값 갱신)
+5. [value 값 갱신](#value-값-갱신)
 
-6. [value 값 추가](#value 값 추가)
+6. [value 값 추가](#value-값-추가)
 
-7. [value 값 제거/삭제](#value 값 제거/삭제)
+7. [value 값 제거/삭제](#value-값-제거/삭제)
 
 8. [sum()](#sum())
 
