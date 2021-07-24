@@ -5,7 +5,7 @@
 <h2>
    목차
 
-1. [테스트](#pd.series(value,index))
+1. [pd.Series(value,index)](#pd-Series-value-index-)<br>
 
 2. [시리즈명.index](#시리즈명.index)
 
@@ -46,12 +46,6 @@
 20.  
 
 [테스트2](#테스트)
-
-# #
-
-###### [테스트](#pd.series(value,index))
-
-###### [테스트2](#pd.series(value,index))
 
 
 
