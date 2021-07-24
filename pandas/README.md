@@ -7,7 +7,7 @@
 
 ## [테스트](#테스트-1-)
 
-1. [pd.Series value,index](#pd.series-value,index)
+1. [pd.Series value,index](#pdseries-valueindex)
 
 2. [시리즈명.index](#시리즈명.index)
 
