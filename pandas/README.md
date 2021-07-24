@@ -49,7 +49,7 @@
 
 # #
 
-###### ###### [테스트](#pd.series(value,index))
+###### [테스트](#pd.series(value,index))
 
 ###### [테스트2](#pd.series(value,index))
 
