@@ -1,2 +1,6 @@
-lis=[56, 34, '가', 90,'Apple']
-print('apple' not in lis)
+list = [1,2,3,
+        4,5,6,
+        7,8,9]
+
+print(list)
+
