@@ -20,7 +20,7 @@
 13. [시리즈명.unique()](#시리즈명unique)
 14. [시리즈명.count()](#시리즈명count)
 15. [시리즈명.mean()](#시리즈명mean)
-16. [시리즈명.value_counts()](#시리즈명valuecounts)
+16. [시리즈명.value_counts()](#시리즈명value_counts)
 
 
 
