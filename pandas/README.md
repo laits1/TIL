@@ -7,11 +7,11 @@
 
 1. [pd.Series(value,index)](#pdseriesvalueindex)
 
-2. [시리즈명.index](#시리즈명.index)
+2. [시리즈명.index](#시리즈명index)
 
-3. [시리즈명.index.name](#시리즈명.index.name)
+3. [시리즈명.index.name](#시리즈명indexname)
 
-4. [시리즈명.values](#시리즈명.values)
+4. [시리즈명.values](#시리즈명values)
 
 5. [value 값 접근](#value-값-접근)
 
@@ -19,23 +19,23 @@
 
 7. [value 값 추가](#value-값-추가)
 
-8. [value 값 제거/삭제](#value-값-제거-삭제)
+8. [value 값 제거/삭제](#value-값-제거삭제)
 
-9. [sum()](#sum())
+9. [sum()](#sum)
 
-10. [시리즈명.size](#시리즈명.size)
+10. [시리즈명.size](#시리즈명size)
 
-11.  [len(시리즈명)](#len(시리즈명))
+11.  [len(시리즈명)](#len시리즈명)
 
-12.  [시리즈명.shape](#시리즈명.shape)
+12.  [시리즈명.shape](#시리즈명shape)
 
-13. #####  [시리즈명.unique()](#시리즈명.unique())
+13. #####  [시리즈명.unique()](#시리즈명unique)
 
-14.  [시리즈명.count()](#시리즈명.count())
+14.  [시리즈명.count()](#시리즈명count)
 
-15.  [시리즈명.mean()](#시리즈명.mean())
+15.  [시리즈명.mean()](#시리즈명mean)
 
-16.  [시리즈명.value_counts()](#시리즈명.value_counts())
+16.  [시리즈명.value_counts()](#시리즈명value-counts)
 
 17.  
 
@@ -502,7 +502,7 @@ b.mean()
 
 
 
-##  시리즈명.value_counts()
+## 시리즈명.value_counts()
 
 - **의미** 
   -   value 값들이 같은 값끼리 인덱스가 되고, 그 개수가 value값으로 세서 반환
