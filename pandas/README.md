@@ -5,9 +5,9 @@
 <h2>
    목차
 
-[1. pd.Series(value, index) 함수](#1-pd-series-value-index--함수)
+[테스트(1)](#테스트-1-)
 
-1. [시리즈명.index](#시리즈명-index)
+1. [시리즈명.index](#시리즈명.index)
 
 2. [시리즈명.index.name](#시리즈명.index.name)
 
@@ -49,7 +49,7 @@
 
 
 
-## 테스트
+## 테스트(1)
 
 ## 1. pd.Series(value, index) 함수
 
