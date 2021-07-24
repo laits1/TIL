@@ -5,7 +5,7 @@
 <h2>
    목차
 
-1. [pd.Series(value,index)](#pd-Series-value-index-)<br>
+1. [pd.Series(value,index)](#pd-series-value-index-)<br>
 
 2. [시리즈명.index](#시리즈명.index)
 
