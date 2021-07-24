@@ -6,27 +6,54 @@
    목차
 
 1. [테스트](#pd.series(value,index))
+
 2. [시리즈명.index](#시리즈명.index)
+
 3. [시리즈명.index.name](#시리즈명.index.name)
+
 4. [시리즈명.values](#시리즈명.values)
+
 5. [value 값 접근](#value-값-접근)
+
 6. [value 값 갱신](#value 값 갱신)
+
 7. [value 값 추가](#value 값 추가)
+
 8. [value 값 제거/삭제](#value 값 제거/삭제)
+
 9. [sum()](#sum())
+
 10. [시리즈명.size](#시리즈명.size)
+
 11.  [len(시리즈명)](#len(시리즈명))
+
 12.  [시리즈명.shape](#시리즈명.shape)
-13.  [시리즈명.unique()](#시리즈명.unique())
+
+13. #####  [시리즈명.unique()](#시리즈명.unique())
+
 14.  [시리즈명.count()](#시리즈명.count())
+
 15.  [시리즈명.mean()](#시리즈명.mean())
+
 16.  [시리즈명.value_counts()](#시리즈명.value_counts())
+
 17.  
+
 18.  
+
 19.  
+
 20.  
 
 [테스트2](#테스트)
+
+# #
+
+###### ###### [테스트](#pd.series(value,index))
+
+###### [테스트2](#pd.series(value,index))
+
+
 
 ## 테스트
 
