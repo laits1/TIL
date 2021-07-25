@@ -21,6 +21,22 @@
 14. [시리즈명.count()](#시리즈명count)
 15. [시리즈명.mean()](#시리즈명mean)
 16. [시리즈명.value_counts()](#시리즈명value_counts)
+17. [pd.DataFrame([리스트1],[리스트2])](#pd.dataframe리스트1리스트2)
+18.  
+19.  
+20.  
+21.  
+22.  
+23.  
+24.  
+25.  
+26.  
+27.  
+28.  
+29.  
+30.  
+31.  
+32. 
 
 
 
@@ -891,11 +907,7 @@ array([2, 0, 1, 3])
 - **입력**
   - df1.count()
 - **출력**
-  - 0    4
-    1    4
-    2    4
-    3    3
-    dtype: int64
+  - 
 
 ```python
 df1
@@ -905,6 +917,544 @@ df1.count()
 ![](md_pic/pandas/df.count().PNG)
 
 
+
+
+
+## 패키지명.load_dataset('data명')
+
+- **의미** 
+  -   데이터셋 불러오기
+- **입력**
+  - 패키지명.load_dataset('데이터명')
+- **출력**
+  - 
+
+```python
+import seaborn as sns # 그래프 패키지
+titanic = sns.load_dataset('titanic')
+titanic.head()
+```
+
+![](md_pic/pandas/load_dataset().PNG)
+
+
+
+
+
+## 시리즈.value_counts(normalize=True)
+
+- **의미** 
+  -   각 값 및 범주형 데이터의 비율 계산
+- **입력**
+  - 시리즈.value_counts(normalize=True)
+- **출력**
+  - 
+
+```python
+s2.value_counts() # 0,1,2,3,4,5가  각 값이 몇번 나왔는지 결과 반환
+s2.value_counts(normalize=True)
+```
+
+![](md_pic/pandas/value_count.PNG)
+
+## 시리즈.sort_index()
+
+- **의미** 
+  -   인덱스를 오름차순/ 내림차순으로 정렬
+- **입력**
+  - 시리즈.sort_index() : 인덱스 오름차순 정렬
+  - 시리즈.sort_index(ascending=False) : 인덱스 내림차순 정렬
+- **출력**
+  - 
+
+```python
+s2.value_counts().sort_index() # 인덱스 기준 정렬 : 오름차순
+s2.value_counts().sort_index(ascending=False) # 인덱스 기준 정렬 : 내림차순
+```
+
+![](md_pic/pandas/sort_index().png)
+
+
+
+
+
+## df.sort_values()
+
+- **의미** 
+  -   by 기준 열 기준으로 오름차순/내림차순 정렬
+  -   ascending 을 생략하면 오름차순
+- **입력**
+  - df.sort_values(by=0, ascending=True)
+  - df.sort_values(by=[0,1], ascending=True)
+- **출력**
+  - 
+
+```python
+df1
+df1.sort_values(by=0, ascending=True) # 0번열을 기준으로 정렬, 오름차순
+df1.sort_values(by=0, ascending=False) # 0번열을 기준으로 정렬, 내림차순
+df1.sort_values(by=[0,1], ascending=True) # 0번 열을 기준으로 정렬하고, 0열 값이 동일 할 때 1열 값 기준을  다시 정렬
+
+```
+
+<img src="md_pic/pandas/sort_values.png" style="zoom:80%;" />
+
+
+
+
+
+## df.sort_index()
+
+- **의미** 
+  -   데이터 프레임의 index를 기준으로 정렬
+- **입력**
+  - df.sort_index(ascending=False)
+- **출력**
+  - 
+
+```python
+df
+df.sort_index() #오름차순
+df.sort_index(ascending=False) #내림차순
+```
+
+<img src="md_pic/pandas/df.sort_index.png" style="zoom:80%;" />
+
+
+
+
+
+## df.sum(axis=0/1)
+
+- **의미** 
+  -   데이터 프레임의 각 열/행의 합계
+- **입력**
+  - df.sum(axis=0) : 각 열의 합계
+  - df.sum(axis=1) : 각 행의 합계
+- **출력**
+  - 
+
+```python
+df2
+df2.sum() # 각 열의 합계 axis=0 생략가능
+df2.sum(axis=1) # 각 행의 합계
+```
+
+<img src="md_pic/pandas/df.sum().png" style="zoom:80%;" />
+
+
+
+
+
+## df.mean() / max() / min()
+
+- **의미** 
+  -   데이터 프레임의 각 열이나 행 단위로 평균 / 최대 / 최소 값 구하는 함수
+- **입력**
+  - df2.mean(axis=1)
+  - df2.max(axis=1)
+  - df2.min(axis=1)
+- **출력**
+  - 
+
+```python
+df2
+df2.mean(axis=1)
+df2.max(axis=1)
+df2.min(axis=1)
+```
+
+<img src="md_pic/pandas/df.mean,max,min.png" style="zoom:80%;" />
+
+
+
+
+
+
+
+## df의 새로운 열과 행 추가
+
+- **의미** 
+  -   데이터 프레임에서 새로운 열과 행 추가
+- **입력**
+  - 새로운 열 추가 
+    - df['새로울 열 이름'] = 값
+  - 새로운 행 추가
+    - df.loc['새로운 행 인덱스'] = 값
+- **출력**
+  - 
+
+```python
+df2.loc['ColTotal']=df2.sum()
+df2["RowSum"] = df2.sum(axis=1) # 원본반영
+df2
+```
+
+<img src="md_pic/pandas/df_make_col,cul.png" style="zoom:80%;" />
+
+
+
+## df.drop()
+
+- **의미** 
+  -   데이터 프레임 행/열 삭제
+- **입력**
+  - df.drop('행이름', 0) : 행 삭제
+    - 행 삭제 후 df로 결과를 반환
+  - df.drop('열이름', 1) : 열 삭제
+    - 열 삭제후 df로 결과를 반환
+  - 원본에 반영되지 않으므로 원본수정하려면 저장 해야함
+- **출력**
+  - 
+
+```python
+df2
+df2.drop('ColTotal',0)
+df2
+```
+
+<img src="md_pic/pandas/df.drop.png" alt="df.drop" style="zoom:80%;" />
+
+
+
+
+
+## df.dropna() / fillna()
+
+- **의미** 
+  -   NaN 값 처리 함수
+- **입력**
+  - df.dropna(axis=0/1)
+    - NaN 값이 있는 열 또는 행 삭제
+    - 원본 반영되지 않음
+  - df.fillna(채우려는 값)
+    - NaN값을 정해진 숫자로 채움
+    - 원본 반영되지 않음
+- **출력**
+  - 
+
+```python
+df2
+df2.dropna()
+df2.fillna(-1)
+```
+
+<img src="md_pic/pandas/df.dropna,fillna.png" style="zoom:80%;" />
+
+
+
+
+
+## df.astype()
+
+- **의미** 
+  -   데이터 프레임 원소의 dtype 변경 함수
+- **입력**
+  - df. astype(float)
+- **출력**
+  - 
+
+```python
+df2
+df2.fillna(5).astype(float)
+```
+
+<img src="md_pic/pandas/df.astype.png" style="zoom:80%;" />
+
+
+
+## df.apply()
+
+- **의미** 
+  -   열 또는 행에 동일한 연산 반복 적용할 때
+  -   동일한 연산을 모든 열/행에 반복 적용하고자 할 때 사용
+- **입력**
+  - df.apply(반복할 함수, axis=0/1)
+    - axis = 0 : 열마다 반복 / 생략시 0
+    - axis = 1 : 행마다 반복
+- **출력**
+  - 
+
+```python
+df3
+df3.apply(np.sum)    # 열
+df3.apply(np.sum, 1) # 행
+```
+
+<img src="md_pic/pandas/df.apply.png" style="zoom:80%;" />
+
+```python
+# 집합 데이터(시리즈)의 최대값과 최소값의 차이를 구하는 연산을 lambda 함수로 정의
+diff = lambda x: x.max() - x.min()
+# apply 함수를 이용하여 위에서 생성한 lambda diff를 df3의 모든 열에 반복 적용하여
+# 모든 열의 최대값과 최소값의 차이를 구하시오
+df3.apply(diff,0)
+
+```
+
+```python
+a    3
+b    4
+c    4
+dtype: int64
+```
+
+
+
+
+
+## pd.cut()
+
+- **의미** 
+  -   값의 크기를 기준으로 카테고리 값으로 변환
+- **입력**
+  - cut(data, bins, labels)
+    - data : 구간을 나눌 실제 관측 값
+    - bins : 구간 경계 값
+    - labels : 카데고리 값
+- **출력**
+  - 
+
+```python
+ages= [0, 0.5, 4, 6, 5, 2, 10, 21, 37, 15, 38, 31, 61, 20, 41, 31, 100]
+labels=['영유아','미성년자','청년','중년','장년','노년']
+bins = [0,4,15,25,35,60,100]
+cats = pd.cut(ages, bins=bins, labels=labels)
+cats.categories
+```
+
+```python
+Index(['영유아', '미성년자', '청년', '중년', '장년', '노년'], dtype='object')
+```
+
+
+
+```python
+# age 리스트를 이용해서 df 생성
+df4 = pd.DataFrame(ages, columns =['ages'])
+df4['연령대'] = pd.cut(df4.ages, bins, labels=labels)
+df4
+```
+
+![](md_pic/pandas/pd.cut.PNG)
+
+
+
+
+
+## pd.qcut()
+
+- **의미** 
+  -   구간 경계선을 지정하지 않고 데이터 개수가 같도록 구간을 분할
+      -   ex) 1000개 데이터를 4구간으로 나누면, 한 구간에 250개씩
+      -   예외) 같은 숫장니 경우에는 같은 구간으로 처리한다.
+- **입력**
+  - qcut(data,나눌구간 개수, labels)
+    - data를 나눌 구간 개수만큼 나누기 labels 붙임.
+- **출력**
+  - 
+
+```python
+qcat = pd.qcut(data,4, labels=['Q1','Q2','Q3','Q4'])
+qcat
+
+```
+
+```python
+['Q2', 'Q4', 'Q4', 'Q2', 'Q3', ..., 'Q1', 'Q1', 'Q1', 'Q3', 'Q3']
+Length: 20
+Categories (4, object): ['Q1' < 'Q2' < 'Q3' < 'Q4']
+```
+
+
+
+```python
+pd.value_counts(qcat)
+```
+
+![](md_pic/pandas/pd.qcut.png)
+
+## df.set_index()
+
+- **의미** 
+  -   기존 행 인덱스를 제거하고 지정한 데이터 열 중 하나를 인덱스로 설정 해주는 함수
+- **입력**
+  - df.set_index('열 인덱스명')
+- **출력**
+  - 
+
+```python
+df3
+df3.set_index('a')
+```
+
+![](md_pic/pandas/df.set_index.PNG)
+
+
+
+## df.reset_index()
+
+- **의미** 
+  -   기존 행 인덱스를 제거하고 기본인덱스로 변경
+      -   기본 인덱스 : 0부터 1씩 증가하는 정수 인덱스
+- **입력**
+  - df.reset_index(drop=True)
+    - drop = True : 기존 인덱스 제거하고 기본인덱스로 변경
+- **출력**
+  - 
+
+```python
+df3.reset_index()
+df3.reset_index(drop=True)
+```
+
+
+
+![](md_pic/pandas/df.reset_index.PNG)
+
+
+
+## df.rename()
+
+- **의미** 
+
+  -   인덱스 원소 이름 변경
+
+- **입력**
+
+  - df.rename(columns = {현재인덱스 :바꿀인덱스},
+
+    ​					index={현재인덱스:바꿀인덱스}]
+
+    - 원본 반영 안됨
+
+- **출력**
+
+  - 
+
+```python
+df3.rename(columns={'b':'학생'},index={0:'1반'})
+df3 # 원본 반영 안됨
+
+```
+
+![](md_pic/pandas/df.rename.png)
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
 
 
 
