@@ -15,28 +15,63 @@
 8. [value 값 제거/삭제](#value-값-제거삭제)
 9. [sum()](#sum)
 10. [시리즈명.size](#시리즈명size)
-11.  [len(시리즈명)](#len시리즈명)
-12.  [시리즈명.shape](#시리즈명shape)
+11. [len(시리즈명)](#len시리즈명)
+12. [시리즈명.shape](#시리즈명shape)
 13. [시리즈명.unique()](#시리즈명unique)
 14. [시리즈명.count()](#시리즈명count)
 15. [시리즈명.mean()](#시리즈명mean)
 16. [시리즈명.value_counts()](#시리즈명value_counts)
 17. [pd.DataFrame([리스트1],[리스트2])](#pddataframe리스트1리스트2)
-18.  
-19.  
-20.  
-21.  
-22.  
-23.  
-24.  
-25.  
-26.  
-27.  
-28.  
-29.  
-30.  
-31.  
-32. 
+18. [pd.DataFrame(딕셔너리)](#pddataframe딕셔너리)
+19. [pd.read_csv()](#pdread_csv)
+20. [df.head(n)](#dfheadn)
+21. [df.tail(n)](#dftailn)
+22. [df.columns](#dfcolumns)
+23. [df.index](#dfindex)
+24. [df.index.name](#dfindexname)
+25. [df.values](#dfvalues)
+26. [df.describe()](#dfdescribe)
+27. [df value값 갱신](#df-value값-갱신)
+28. [df value값 추가](#df-value값-추가)
+29. [df value값 제거/삭제](#df-value값-제거삭제)
+30. [np.random.seed(n)](#nprandomseedn)
+31. [np.random.randint()](#nprandomrandint)
+32. [df.count()](#dfcount)
+33. [패키지명.load_dataset()](#패키지명load_dataset)
+34. [시리즈.value_counts(normalize=True)](#시리즈value_countsnormalizetrue)
+35. [시리즈.sort_index()](#시리즈sort_index)
+36. [df.sort_values()](#dfsort_values)
+37. [df.sort_index()](#dfsort_index)
+38. [df.sum(axis=0/1)](#dfsumaxis01)
+39. [df.mean() / max() / min()](#dfmean--max--min)
+40. [df의 새로운 열과 행 추가](#df의-새로운-열과-행-추가)
+41. [df.drop()](#dfdrop)
+42. [df.dropna() / fillna()](#dfdropna--fillna)
+43. [df.astype()](#dfastype)
+44. [df.apply()](#dfapply)
+45. [pd.cut()](#pdcut)
+46. [pd.qcut()](#pdqcut)
+47. [df.set_index()](#dfset_index)
+48. [df.reset_index()](#dfreset_index)
+49. [df.rename()](#dfrename)
+50. 
+51. 
+52. 
+53. 
+54. 
+55. 
+56. 
+57. 
+58. 
+59. 
+60. 
+61. 
+62. 
+63. 
+64. 
+65. 
+66. 
+67. 
 
 
 
@@ -920,7 +955,7 @@ df1.count()
 
 
 
-## 패키지명.load_dataset('data명')
+## 패키지명.load_dataset()
 
 - **의미** 
   -   데이터셋 불러오기
