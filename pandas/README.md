@@ -840,12 +840,12 @@ del df3['2010-2015 증가율']
 
 
 
-## 함수
+## np.random.seed(n)
 
 - **의미** 
-  -   
+  -   난수 값 고정함수
 - **입력**
-  - 
+  - np.random.seed(3)
 - **출력**
   - 
 
@@ -861,45 +861,48 @@ del df3['2010-2015 증가율']
 
 
 
-## 함수
+## np.random.randint()
 
 - **의미** 
-  -   
+  -   랜덤한 숫자 array로 반환
 - **입력**
-  - 
+  - np.random.randint(n, size=m)
+    - 0부터 n-1 사이의 숫자를 m개 랜덤으로 반환
 - **출력**
   - 
 
 ```python
-
+np.random.seed(3)   # 난수값을 고정하기 위해
+np.random.randint(5, size=4)
 ```
 
 ```python
-
+array([2, 0, 1, 3])
 ```
 
 
 
 
 
-## 함수
+## df.count()
 
 - **의미** 
-  -   
+  -   데이터 프레임의 count()는 각 열의 유효한 원소의 개수 반환(NaN은 세지 않는다.)
 - **입력**
-  - 
+  - df1.count()
 - **출력**
-  - 
+  - 0    4
+    1    4
+    2    4
+    3    3
+    dtype: int64
 
 ```python
-
+df1
+df1.count()
 ```
 
-```python
-
-```
-
-
+![](C:\Users\SDG\AppData\Roaming\Typora\typora-user-images\image-20210725120742187.png)
 
 
 
