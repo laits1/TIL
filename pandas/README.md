@@ -54,11 +54,11 @@
 47. [df.set_index()](#dfset_index)
 48. [df.reset_index()](#dfreset_index)
 49. [df.rename()](#dfrename)
-50. 
-51. 
-52. 
-53. 
-54. 
+50. [df.merge()](#dfmerge)
+51. [df.merge(on 파라미터)](#dfmergeon-파라미터)
+52. [df.merge(left/right_index)](#dfmergeleftright_index)
+53. [pd.concat()](#pdconcat)
+54. [df.pivot_table()](#dfpivot_table)
 55. 
 56. 
 57. 
@@ -1542,6 +1542,108 @@ result = pd.concat([df1,df2])
 
 
 
+## df.pivot_table()
+
+- **의미** 
+  -   가지고 있는 데이터 원본을 원하는 형태의 가공된 정보를 보여 주는 것
+  -   피봇테이블을 작성할 때 반드시 설정해야 되는 인수
+      - data : 사용 데이터 프레임
+      - index : 행 인덱스로 사용할 필드(기준 필드로 작용됨)
+      - 인덱스 명을 제외한 나머지 값(data)은 수치 data 만 사용함
+      - 기본 함수가 평균(mean)함수 이기 때문에 각 데이터의 평균값이 반환
+- **입력**
+  - pivot_table(data,values=None,index=None,columns=None,aggfunc='mean',margins=False,margins_name='All')
+    - data : 분석할 데이터 프레임. 메서드 형식일때는 필요하지 않음 ex)df1.pivot_table()
+    - values : 분석할 데이터 프레임에서 분석할 열
+    - index :  행 인덱스로 들어갈 키열 또는 키열의 리스트
+    - columns : 열 인덱스로 들어갈 키열 또는 키열의 리스트
+    - fill_value : NaN이 표출될 때 대체값 지정
+    - margins : 모든 데이터를 분석한 결과를 행으로 표출할 지 여부
+    - margins_name : margins가 표출될 때 그 열(행)의 이름`
+    - aggfunc : 집계 함수(요약 결과에 적용시킬 함수)
+- **예시**
+
+```python
+df1
+# 각 지역별 도시에 대한 연도별 인구수 평균
+df1.pivot(['지역','도시'],'연도','인구')
+# index=['지역','도시'] -> 행 , column=연도-> 열, value=인구 -> 값, aggfunc=mean(생략)
+```
+
+<img src="md_pic/pandas/df.pivot().png" style="zoom:80%;" />
+
+
+
+```python
+# 각 선실 등급별로 숙박객의 평균 나이
+df.head()
+pdf1 = pd.pivot_table(df,
+                     index='class',
+                     values='age')
+pdf1
+```
+
+<img src="md_pic/pandas/pivot_table1.PNG" style="zoom:80%;" />
+
+```python
+# 각 선실 등급별로 숙박객의 성별 평균 나이
+pdf2 = pd.pivot_table(df,
+                     index = 'class',
+                      coulumns = 'sex',
+                     values = 'age')
+pdf2
+```
+
+<img src="md_pic/pandas/pivot_table2.png" style="zoom:80%;" />
+
+```python
+# 각 선실 등급별 숙박객의 생존자 수와 생존율을 성별로 요약하시오.
+# 생존 여부 : survied
+pdf3 = pd.pivot_talbe(df,
+                     index = 'class',
+                     columns = 'sex',
+                     values = 'survived'
+                     aggfunc= ['mean','sum'])
+pdf3
+```
+
+<img src="md_pic/pandas/pivot_table3.PNG" style="zoom:80%;" />
+
+```python
+# 선실 등급에 따른 남/여에 대해 생존 여부별과 나이와 티켓값의 평균과 최대값을 요약
+pdf4 = pd.pivot_table(df,
+                     index = ['class','sex'],
+                     columns = 'survived',
+                     values = ['age','fare']
+                     aggfunc = ['mean','max'])
+pdf4
+```
+
+<img src="md_pic/pandas/pivot_table4.PNG" style="zoom:80%;" />
+
+
+
+## group
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+
+
+```python
+
+```
+
+
+
 ## 함수
 
 - **의미** 
@@ -1580,6 +1682,8 @@ result = pd.concat([df1,df2])
 
 
 
+
+
 ## 함수
 
 - **의미** 
@@ -1596,6 +1700,197 @@ result = pd.concat([df1,df2])
 ```python
 
 ```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+
+## 함수
+
+- **의미** 
+  -   
+- **입력**
+  - 
+- **출력**
+  - 
+
+```python
+
+```
+
+```python
+
+```
+
+
 
 
 
