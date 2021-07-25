@@ -21,7 +21,7 @@
 14. [시리즈명.count()](#시리즈명count)
 15. [시리즈명.mean()](#시리즈명mean)
 16. [시리즈명.value_counts()](#시리즈명value_counts)
-17. [pd.DataFrame([리스트1],[리스트2])](#pd.dataframe리스트1리스트2)
+17. [pd.DataFrame([리스트1],[리스트2])](#pddataframe리스트1리스트2)
 18.  
 19.  
 20.  
