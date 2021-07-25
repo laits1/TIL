@@ -1379,79 +1379,166 @@ df3 # 원본 반영 안됨
 
 
 
-## 함수
+## df.merge()
 
 - **의미** 
-  -   
+  -   두 개의 데이터 프레임의 공통 열이나 인덱스를 기준으로 두개의 데이터 프레임을 합친다.
+  -   이때 기준이 되는 열 데이터를 key 라고 부른다.
+  -   병합방식
+      - left join : 왼쪽 df에 존재하는 키 데이터는 모두 표시, 오른쪽 df는 키가 존재하면 표시
+      - right join : 오른쪽 df에 존재하는 키 데이터는 모두 표시, 왼쪽 df는 키가 존재하면 표시
+      - inner join :  양쪽 df에서 모두 키가 존재하는 data만표시
+      - outer join :  한쪽에만 키가 존재하면 data를 표시
+      - 병합방식을 설정 : how=inner(생략가능), how=outer
+
+![](join_all.png)
+
 - **입력**
-  - 
+  - df1.merge(df2, how = ) # 기준 df : df1
+  - pd.merge(df1,df2, how =) # 기준df : 왼쪽
 - **출력**
   - 
 
 ```python
-
+df1
+df2
+pd.merge(df1,df2, how = 'left')
 ```
+
+![](md_pic/pandas/pd.merge(left).PNG)
 
 ```python
-
+df1
+df2
+pd.merge(df1,df2, how = 'right')
 ```
 
+![](md_pic/pandas/pd.merge(right).PNG)
+
+```python
+df1
+df2
+pd.merge(df1,df2, how = 'inner') # inner 인경우 생략가능
+```
+
+![](md_pic/pandas/pd.merge(inner).PNG)
 
 
-## 함수
+
+```python
+df1
+df2
+pd.merge(df1,df2, how = 'outer')
+```
+
+![](md_pic/pandas/pd.merge(outer).PNG)
+
+
+
+## df.merge(on 파라미터)
 
 - **의미** 
-  -   
+  -   on 파라미터를 이용해 데이터 프레임 병합 시 직접 key(기준)열을 설정
 - **입력**
-  - 
+  - pd.merge(df1, df2, on='기준열')
 - **출력**
   - 
 
 ```python
-
+df1
+df2
+pd.merge(df1, df2, on='고객명')
 ```
+
+<img src="md_pic/pandas/df.merge(on).png" style="zoom:80%;" />
+
+
 
 ```python
-
+df1
+df2
+pd.merge(df1,df2, left_on='이름', right_on='성명')
+#양쪽에서 기준이되는 열의 이름이 다르기 때문에 on인수를 두번사용
+#출력결과는 양쪽 df의 기준 열이름이 다르기 때문에 기준열이 모두나타난다
 ```
 
+<img src="md_pic/pandas/df.merge(left_right_on).PNG" style="zoom:80%;" />
 
 
-## 함수
+
+
+
+## df.merge(left/right_index)
 
 - **의미** 
-  -   
+  -   일반 데이터 열이 아닌 인덱스 기준으로 merge
+  -   left_index = True , right_index = True
+  -   양쪽 데이터 프레임의 key(기준열)가 모두 인덱스인 경우
 - **입력**
-  - 
+  - pd.merge(df1,df2, left_on='', right_index=True)
 - **출력**
   - 
 
 ```python
-
+df1
+df2
+pd.merge(df1,df2, left_on=['도시','연도'], right_index=True)
 ```
+
+<img src="md_pic/pandas/df.merge(index).PNG" style="zoom:80%;" />
+
+
 
 ```python
-
+df1
+df2
+pd.merge(df1,df2, how='outer', left_index=True, right_index=True)
 ```
 
+<img src="md_pic/pandas/df.merge(index2).PNG" style="zoom:80%;" />
 
 
-## 함수
+
+## pd.concat()
 
 - **의미** 
-  -   
+
+  - 기준열 없이 데이터 연결
+
+  - 기본은 위 아래로 데이터 행 결합(row bind)  axis 속성을 1로 설정하면 열 결합(column bind)을 수행한다
+
+  - 단순히 두 시리즈나 데이터프레임을 연결하기 때문에 인덱스 값이 중복될 수 있다.
+
+  - ### pd.concat([df1,df2], axis=0)
+
+    ​	![](join_inout_row.png)
+
+  - ### pd.concat([df1,df2], axis=1)
+    ![](concat_column.png)
+
+  -    기본 값 axis = 0, join = 'outer'
+
 - **입력**
-  - 
+
+  - pd.concat(objs,  # Series, DataFrame, Panel object  
+            axis=0,  # 0: 위+아래로 합치기, 1: 왼쪽+오른쪽으로 합치기   
+            join='outer', # 'outer': 합집합(union), 'inner': 교집합(intersection)  
+            ignore_index=False,  # False: 기존 index 유지, True: 기존 index 무시  
+            keys=None, # 계층적 index 사용하려면 keys 튜플 입력)
+
 - **출력**
+
   - 
 
 ```python
-
+df1
+df2
+result = pd.concat([df1,df2])
 ```
 
-```python
+<img src="md_pic/pandas/pd.concat().png" style="zoom:80%;" />
 
-```
+
 
 
 
