@@ -902,7 +902,9 @@ df1
 df1.count()
 ```
 
-![](C:\Users\SDG\AppData\Roaming\Typora\typora-user-images\image-20210725120742187.png)
+![](md_pic/pandas/df.count().PNG)
+
+
 
 
 
