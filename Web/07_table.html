@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table 태그</title>
+  <!-- css 활용해서 td 태그의 넓이는 100px로 일괄 설정-->
+    <style>
+      td {width:100px}
+    </style>
+</head>
+<body>
+
+  <table border="1">
+    <caption>테이블1</caption> <!-- 표 제목 설정 -->
+    <thead align="center">
+      <tr><td>a</td><td>b</td><td>c</td><td>d</td></tr>
+      <tr><td>a1</td><td>b1</td><td>c1</td><td>d1</td></tr>
+      <tr><td>a2</td><td>b2</td><td>c2</td><td>d2</td></tr>
+      <tr><td>a3</td><td>b3</td><td>c3</td><td>d3</td></tr>
+      <tr><td>a4</td><td>b4</td><td>c4</td><td>d4</td></tr>
+    </thead>
+  </table>
+
+  <hr>
+
+  <table border="1">
+    <caption>테이블2</caption> <!-- 표 제목 설정 -->
+    <thead align="center">
+      <tr><td>a</td><td>b</td><td>c</td><td>d</td></tr>
+      <tr><td rowspan="4">a1</td><td colspan="3">b1</td>
+      <tr><td>b2</td><td>c2</td><td>d2</td></tr>
+      <tr><td rowspan="2">b3</td><td>c3</td><td rowspan="2">d3</td></tr>
+      <td>c4</td></tr>
+    </thead>
+  </table>
+
+<hr>
+
+
+</body>
+</html>
