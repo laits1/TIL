@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iframe</title>
+  <style>
+        #bigBox { margin:0 auto; width:1024px; }
+		#box2 {position: absolute; margin-left:250px; top:270px;}
+		iframe {width:580px; height:480px; border:none;}
+	</style>
+
+</head>
+<body>
+
+  <div ID="bigBox">
+    <div id="box1">
+      <img src="image/메인.png" border="1" usemap="#cityMap">
+      <map name="cityMap">
+        <area shape="rect" coords="63,89,255,149" href="뉴욕.html" target="iFrameArea">
+        <area shape="rect" coords="317,89,503,149" href="파리.html" target="iFrameArea">
+        <area shape="rect" coords="562,89,750,149" href="로마.html" target="iFrameArea">
+        <area shape="rect" coords="813,89,1000,149" href="베이징.html" target="iFrameArea">
+
+      </map>
+    </div>
+    <div id="box2">
+      <iframe name="iFrameArea" ></iframe>
+    </div>
+  </div>
+
+</body>
+</html>
