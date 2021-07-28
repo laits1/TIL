@@ -5,8 +5,11 @@
     <title>입력 양식 태그</title>
 </head>
 <body>
+    <!-- method= get/post
+    post 방식 : 데이터 가려줌
+    get 방식 : 데이터 보여줌-->
 
-     <form method="post" action="http://test.co.kr/web/newMember.jsp"
+     <form method="get" action="http://test.co.kr/web/newMember.jsp"
         label 태그 사용하지 않음<p>
         성명 <input type="text" id="name" size="10" autofocus> <br>
         <input type="text" id = "proNo" hidden>
@@ -55,18 +58,39 @@
         <br><br>
         <label>이메일 <input type="email"> <br><br></label>
 
-        여행하고 싶은 나라 :
+        <!-- dropdown list 구성 <select><option> 이용해서 생성
+         selected 속성 값은 기본 선택항목을 설정 함-->
 
-           미국
-            중국
-            호주
-            일본
-            브라질
-            기타
+        여행하고 싶은 나라 :
+        <select name="nation">
+            <option value="미국">미국</option>
+            <option value="중국">중국</option>
+            <option value="호주" selected>호주</option>
+            <option value="일본">일본</option>
+            <option value="브라질">브라질</option>
+            <option value="기타">기타</option>
+            </select>
         <br><br>
 
         자기 소개 <br>
-
+        <!-- 여러줄이 입력 가능한 텍스트 창은 <textarea> 태그를 이용해서 생성
+        <textarea rows=행수 cols=한행의글자수>   -->
+        <textarea rows="10" cols="50" name="content"></textarea>
+        <!-- input type="submit" : 전송버틴 / input type="reset" : 취소버튼 -->
+        <br><input type="submit" value="회원가입">
+        <input type="reset" value="취소">
 </body>
 </html>
 
+
+<!--
+확인
+autofocus : 입력 커서 표시
+hidden : 안 보임
+placeholder : 입력 힌트 표시
+maxlength : 최대 길이 (한글/영문/숫자)
+value : 초기값 ( 서버로 전송되는 값을 의미 - input type  text 인경우 사용자가 입력한 내용이 vaule 속성 값으로 재 설정 됨
+readonly : 읽기만 가능 (입력 안됨)
+required : 필수로 지정
+
+-->

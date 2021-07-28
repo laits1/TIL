@@ -1623,12 +1623,13 @@ pdf4
 
 
 
-## group
+## groupby
 
 - **의미** 
-  -   
+  -   ![](md_pic/groupby.png)-
 - **입력**
-  - 
+  - df.groupby('열 인덱스').mean()
+  - 데이터셋.groupby(데이터셋.열 인덱스).함수()
 - **출력**
   - 
 
