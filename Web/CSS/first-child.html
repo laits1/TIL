@@ -4,8 +4,32 @@
 <meta charset="UTF-8">
 <title>first-child 선택자</title>
 	<style type="text/css">
+		#content div{	/* content의 모든 자손<div> */
+			width: 400px;
+			height: 50px;
+			border: solid 1px black;
+		}
+		
+		/* :first-child 작성시 : 앞뒤로 띄어쓰기 하면안됨. */
+		#content div:first-child {	/* 첫번째 div */
+			background: yellow;
+		}
 
-	</style>
+		#content div:first-child + div {	/* 두번째 div */
+			background: green;
+		}
+
+		#content div:nth-child(3) {	/* 3번째 div */
+			background: gold;
+		}
+
+		#content div:nth-child(4) {	/* 4번째 div */
+			background: pink;
+		}
+
+
+
+</style>
 </head>
 <body>
 	<div id="content">

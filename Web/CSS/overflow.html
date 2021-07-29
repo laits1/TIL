@@ -4,7 +4,15 @@
 <meta charset="UTF-8">
 <title>overflow</title>
 	<style type="text/css">	
-
+	div {
+		width: 200px;
+		height: 175px;
+		border:solid 1px black;
+		/*overflow 속성 설정 안하면 상위 영역 밖에 표시하게 됨 */
+		/* overflow:hidden; */ /*부모 태그 영역 밖의 후손태그는 감춘다. */
+		/* overflow:scroll; */
+		overflow: auto;
+	}
 	</style>
 </head>
 <body>

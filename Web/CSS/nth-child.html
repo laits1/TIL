@@ -4,8 +4,31 @@
 <meta charset="UTF-8">
 <title>테이블에서 짝수 행 선택 </title>
 	<style type="text/css">		
+    #stdTable {
+        margin:0 auto;
+        border-collapse: collapse;
+    }
 
+    #stdTable th{
+        color: white;
+        background-color: blue;
+    }
+
+    /* 아래와 같이 클래스 선택해도 동일함
+    .name {width: 100px;}
+    .email {width: 200px;} */
+
+    #stdTable.th.name {width:100px;}
+    #stdTable.th.email {width:200px;}
+
+    #stdTable td {height: 20px;}
+    
+    /* 짝수행 선택(tr) */
+    #stdTable tr:nth-child(2n) td {
+        background-color:yellow;
+    }
     </style>
+
 </head>
 
 <body>

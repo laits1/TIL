@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>연습문제 4</title>
+
+    <style>
+        #container {
+        width: 600px;
+        border: 1px solid black;
+        padding: 20px 40px;
+        margin: 0 auto;
+        }
+
+        ul {list-style-type:none;}
+        li {line-height: 40px;}
+        .info {
+            width: 100px;
+            float: left;
+        }
+    </style>
+
+
+</head>
+<body>
+    <div id = "container">
+    <h1>프론트 엔드 개발자 지원서</h1>
+    <p>HTML, CSS, Javascript에 대한 기술적 이해와 경험이 있는 분을 찾습니다.</p>
+    <hr>
+        <form>
+            <h4>개인정보</h4>
+            <ul>
+                <li>
+                    <label class="info">이름</label>
+                    <input type="text" autofocus placeholder="공백없이 입력하세요.">
+                </li>
+                <li>
+                    <label class="info">연락처</label>
+                    <input type="text">
+                </li>
+            </ul>
+
+            <h4>지원분야</h4>
+            <ul>
+                <li>
+                    <label><input type="radio" name="field">웹퍼블리싱</label>
+                </li>
+                <li>
+                    <label><input type="radio" name="field">웹 애플리케이션 개발</label>
+                </li>
+                <li>
+                    <label><input type="radio" name="field">개발환경 개선</label>
+                </li>
+            </ul>
+            <label>
+                <h4>지원동기</h4>
+                <textarea cols="60" rows="5"placeholder="본사 지원동기를 간략히 써주세요."></textarea>
+            </label>
+
+            <div>
+                <input type="submit" value="접수하기">
+                <input type="reset" value="다시쓰기">
+            </div>
+        </form>
+
+    </div>
+</body>
+</html>
