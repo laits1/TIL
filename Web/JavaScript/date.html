@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+    var today = new Date(); // Date 객체 인스턴스 today 선언
+        // var year = today.getYear();
+    var year = today.getFullYear();
+
+    document.write("오늘은" + year + "년 입니다.");
+
+    var month = today.getMonth() + 1;
+    var date = today.getDate();
+    // 요일 설정
+    var day;
+    switch(today.getDay()) {
+        case 0 : day="일"; break;
+        case 1 : day="월"; break;
+        case 2 : day="화"; break;
+        case 3 : day="수"; break;
+        case 4 : day="목"; break;
+        case 5 : day="금"; break;
+        default : day="토"; break;
+    }
+    document.write("<br>오늘은 " + year + "년 " + 
+    month + "월 " + date + "일 " + 
+    day +"요일 입니다.");
+
+    
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
