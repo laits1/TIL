@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>msgWindow.html</title>
+    <script>
+        function winClose() {
+            window.close(); // 현재 창(msgWindow.html) 닫고
+            opener.focus(); // 현재 창을 연 부모창에 포커스 주기
+        }
+    </script>
+</head>
+<body onLoad="setTimeout('winClose()',3000)">
+공지사항<br>
+이 창은 3초후에 닫힙니다.
+
+</body>
+</html>

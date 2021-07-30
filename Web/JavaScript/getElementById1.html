@@ -4,13 +4,16 @@
 		<meta charset="UTF-8">
         <title>getElementById() 예제</title>
         <script type="text/javascript">			
-
+			function change() {
+				var head = document.getElementById('header');
+				head.innerHTML = "변경된 제목";
+			}
 		</script>
 	</head>
 	
 	<body>
     	<h1 id="header">제목</h1>
-        <button id="btn" onClick="#">제목 변경</button>
+        <button id="btn" onClick="change()">제목 변경</button>
 	</body>
 </html>
 

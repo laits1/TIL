@@ -4,7 +4,20 @@
 		<meta charset="UTF-8">
         <title>createElement('img') 예제</title>
         <script type="text/javascript">
+			// 윈도우 load 이벤트 핸들러를 구성
+			window.onload = function() {
+				// 1단계 : 요소 노드 생성
+				// 요소노드(<img> 태그) 생성하고  변수에 저장 (화면에 출력해야 하므로)
+				var img = document.createElement('img');
+				// 속성 설정
+				img.src = "image/bird.jpg";
+				img.width = 250;
+				img.height = 180;
+				img.title ="예쁜새";
 
+				// 2단계 : 문서에 출력
+				document.body.appendChild(img);
+			}
 		</script>
 	</head>
 	
