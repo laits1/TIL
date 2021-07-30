@@ -3,11 +3,35 @@
     <head>
         <meta charset="utf-8">
         <title>속성 선택자</title>   
-        <script src="jquery-3.4.1.min.js"></script>
+        <script src="jquery-3.5.1.min.js"></script>
 		<script type="text/javascript">    
 			$(document).ready(function(){
+        // 1. input 태그 속성 type 을 찾아서 바탕색 pink로 변경
+          $("input[type]").css("background-color","pink");
+          // 2. 속성 type이 text인 태그를 찾아 글자 색상을 blue width 200으로 변경
+          // $("input[type=text]").css({"color":"blue", "width":"200px"});
+          $(":text").css({"color":"blue", "width":"200px"});
 
-	         });
+          // 속성 type 중 submit, reset 버튼 찾아서 배경색을 gold색으로 변경
+          $(":submit,:reset").css("background","gold");
+
+          // 4. 속성 타입 중 password 찾아서 글자색, width 변경
+          // $(":password").css({"color":"red", "width":"200px"});
+
+          // 5. 속성 타입 중 password 찾아서 글자색, width 변경 - 메소드체인방식 사용할 것
+          $(":password").css({"color":"red", "background":"green"}).css('width','200px');
+
+          // 6. option 태그의 value 속성의 값이 프로그래머인 요소를 찾아서 글자색을 red로 변경
+          $('option[value="프로그래머"]').css('color','red');
+
+          // 7. option 태그의 value 속성의 값이 웹인 요소를 찾아서 글자색을 blue로 변경
+          $('option[value^="웹"]').css('color','blue');
+
+          // 8. select 태그의 하위 option 태그의 value 속성의 값이 '사'러 끝나는 요소를 찾아서 글자색을 green로 변경
+          $('option[value$="사"]').css('color','green');
+
+
+        });
 		</script>  
     </head>
     <body>

@@ -16,7 +16,7 @@
 	        	
 	        	//자바스크립트 사용 아이디로 요소 찾아와서 jQuery 메소드 사용할 경우
 				var box2 = document.getElementById('box2');
-				box2.css('color', 'blue'); //jQuery 메소드 사용할 수 없음
+				// box2.css('color', 'blue'); //jQuery 메소드 사용할 수 없음
 				
 	        	//jQuery 변수에 값 저장되는 경우
 	        	//변수 $divLen에 <div> 태그 개수 저장
@@ -24,7 +24,9 @@
 	        	//box2에 변수 $divLen 타입 출력 : number(숫자)
 	        	var $box2= $('#box2'); //ID 선택자
 	        	$box2.text(typeof divLen);
-	        }); 
+	        });
+			// jQuery 변수에 저장되는 data가 jQuery 객체면 $ 기호를 사용
+			// jQuery 객체의 속성이나 메서드로 반환되는 값(객체가 아닌 일반 값) 을 저장할 때는 $기호를 사용하지 않는다.
         </script>    
 	</head>
 	

@@ -6,22 +6,28 @@
         <script src="jquery-3.5.1.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				//$("선택자").css(‘속성’, ’값’);	
+				//$("선택자").css(‘속성’, ’값’);    
+                // 해당 선택 객체의 css 속성을 변경시켜주는 함수
+
 				//큰 따옴표, 작은 따옴표 다 사용 가능
 				//1. 전체 선택자 : 문서 전체의 글자색 변경
-
+                $("*").css("color","red");
 					 
 				//2. 태그 선택자 : h3 태그에 밑줄 그리기
-
+                $("h3").css("textDecoration", "underline");
 					 
 				//3. 태그 선택자 : h3, h4 태그에 배경색 pink 지정하기
-
+                $("h3,h4").css("backgroundColor", "pink");
 				
 				//4. ID 선택자 : id가 idSelector인 태그의 글자 색상을 blue/#0000ff/#00f
 				//id가 jQuery인 태그의 글자 색상을 green으로 설정
+                $("#idSelector").css('color','blue');
+                $("#jQuery").css('color','green');
 
 				//5. 클래스 선택자 : class가 selector인 태그의 글자를 이탤릭체로,
 				//class가 web인 태그의 글자를 굵게
+                $(".selector").css("font-style", "italic");
+                $(".web").css("font-weight", "bold");
 
 			});
 		</script>        
