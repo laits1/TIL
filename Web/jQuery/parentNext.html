@@ -12,17 +12,33 @@
 		</style>
         <script src="jquery-3.5.1.min.js"></script>
 		<script type="text/javascript">
-			$(document).ready(function(){   
- //모든 조상
- //조상 area
-//조상 c1, c2
- //p의 부모
-//바로 다음 요소
- //다음 모든 요소
- //이전 모든 요소
-				//c1 다음 c4 이전 : c2, 23 
+			$(document).ready(function(){ 
+				// p 태그 기준 모든 조상을 노란색 배경으로
+				// backgroundColor | background-color | background 모두 동일코드
+				$('p').parents().css("backgroundColor", "yellow");
 
-				//c3 이전 c1 다음 : c2
+				//조상 area 영역 흰색
+				$('p').parents("#area").css("backgroundColor", "white");
+				
+				// p태그의 조상 중 c1, c2의 배경색을 브라운으로
+				$('p').parents("#c1,#c2").css("background", "brown");
+				
+				//p의 부모 요소를 초록색으로
+				$('p').parent().css("backgroundColor", "green");
+				
+				// c1 바로 다음 요소 배경색을 pink
+				$('#c1').next().css("backgroundColor", "pink");
+				
+				// c2 다음 모든 요소 오렌지색으로
+				$('#c2').nextAll().css("backgroundColor", "orange");
+				
+				// c4 이전 모든 요소의 글자색을 파란색으로 변경
+				$('#c4').prevAll().css("color", "blue");
+				
+				//c1 다음 c4 이전 : c2, c3  를 둥근 사각형으로 
+				$('#c1').nextUntil('#c4').css('borderRadius', '20px');
+				//c3 이전 c1 다음 : c2 테두리를 5px 로 빨간색
+				$('#c3').prevUntil('#c1').css('border', 'solid 5px red');
 
 			});	
 		</script>               
