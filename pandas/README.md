@@ -1217,7 +1217,9 @@ df3.apply(np.sum, 1) # 행
 
 ```
 
-<img src="md_pic/pandas/df.apply.png" style="zoom:80%;" />
+<img src="md_pic/pandas/df.apply.PNG" style="zoom:80%;" />
+
+
 
 ```python
 # 집합 데이터(시리즈)의 최대값과 최소값의 차이를 구하는 연산을 lambda 함수로 정의
