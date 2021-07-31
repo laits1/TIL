@@ -1214,6 +1214,7 @@ df2.fillna(5).astype(float)
 df3
 df3.apply(np.sum)    # 열
 df3.apply(np.sum, 1) # 행
+
 ```
 
 <img src="md_pic/pandas/df.apply.png" style="zoom:80%;" />
