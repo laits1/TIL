@@ -1032,7 +1032,7 @@ df1.sort_values(by=[0,1], ascending=True) # 0번 열을 기준으로 정렬하�
 
 ```
 
-<img src="md_pic/pandas/sort_values.png" style="zoom:80%;" />
+<img src="md_pic/pandas/sort_values.PNG" style="zoom:80%;" />
 
 
 
@@ -1053,7 +1053,7 @@ df.sort_index() #오름차순
 df.sort_index(ascending=False) #내림차순
 ```
 
-<img src="md_pic/pandas/df.sort_index.png" style="zoom:80%;" />
+<img src="md_pic/pandas/df.sort_index.PNG" style="zoom:80%;" />
 
 
 
@@ -1075,7 +1075,7 @@ df2.sum() # 각 열의 합계 axis=0 생략가능
 df2.sum(axis=1) # 각 행의 합계
 ```
 
-<img src="md_pic/pandas/df.sum().png" style="zoom:80%;" />
+<img src="md_pic/pandas/df.sum().PNG" style="zoom:80%;" />
 
 
 
@@ -1099,7 +1099,7 @@ df2.max(axis=1)
 df2.min(axis=1)
 ```
 
-<img src="md_pic/pandas/df.mean,max,min.png" style="zoom:80%;" />
+<img src="md_pic/pandas/df.mean,max,min.PNG" style="zoom:80%;" />
 
 
 
@@ -1125,7 +1125,7 @@ df2["RowSum"] = df2.sum(axis=1) # 원본반영
 df2
 ```
 
-<img src="md_pic/pandas/df_make_col,cul.png" style="zoom:80%;" />
+<img src="md_pic/pandas/df_make_col,cul.PNG" style="zoom:80%;" />
 
 
 
@@ -1148,7 +1148,7 @@ df2.drop('ColTotal',0)
 df2
 ```
 
-<img src="md_pic/pandas/df.drop.png" alt="df.drop" style="zoom:80%;" />
+<img src="md_pic/pandas/df.drop.PNG" alt="df.drop" style="zoom:80%;" />
 
 
 
@@ -1174,7 +1174,7 @@ df2.dropna()
 df2.fillna(-1)
 ```
 
-<img src="md_pic/pandas/df.dropna,fillna.png" style="zoom:80%;" />
+<img src="md_pic/pandas/df.dropna,fillna.PNG" style="zoom:80%;" />
 
 
 
@@ -1194,7 +1194,7 @@ df2
 df2.fillna(5).astype(float)
 ```
 
-<img src="md_pic/pandas/df.astype.png" style="zoom:80%;" />
+<img src="md_pic/pandas/df.astype.PNG" style="zoom:80%;" />
 
 
 
@@ -1573,7 +1573,7 @@ df1.pivot(['지역','도시'],'연도','인구')
 # index=['지역','도시'] -> 행 , column=연도-> 열, value=인구 -> 값, aggfunc=mean(생략)
 ```
 
-<img src="md_pic/pandas/df.pivot().png" style="zoom:80%;" />
+<img src="md_pic/pandas/df.pivot().PNG" style="zoom:80%;" />
 
 
 
@@ -1597,7 +1597,7 @@ pdf2 = pd.pivot_table(df,
 pdf2
 ```
 
-<img src="md_pic/pandas/pivot_table2.png" style="zoom:80%;" />
+<img src="md_pic/pandas/pivot_table2.PNG" style="zoom:80%;" />
 
 ```python
 # 각 선실 등급별 숙박객의 생존자 수와 생존율을 성별로 요약하시오.
