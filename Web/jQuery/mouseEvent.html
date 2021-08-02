@@ -6,8 +6,19 @@
 		<script src="jquery-3.5.1.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
+				// 1. btn 클릭 했을 때 경고창 출력
+				$('#btn').on('click', function() {
+					alert("클릭했습니다.");
+				});
+				// 2. mouseover, mouseout 두 이벤트에 대해 버튼 색상 변경
+				$('#btn')
+				.on('mouseover', function(){ // 마우스를 버튼에 올렸을 때
+					$(this).css('background-color', 'yellow');
+				})
+				.on('mouseout', function() {	// 마우스가 버튼에서 나왔을 때
+					$(this).css('background-color','lime');
+				});
 
-				
 		 	   });												
 	</script>
 </head>
