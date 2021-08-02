@@ -6,9 +6,10 @@
 		<script type="text/javascript">
 			var count = 0;
 			
-			function start() {
+			function start() {	// 출력 문구를 내보내고 확인버튼을  누르면 showImage 호출하기 위해서 setInterval 함수 호출
 				alert("이미지 10개 출력");
 	           //인터발 설정 코드
+			   timerID = setInterval('showImg()', 1000);
 			}
 			
 			function showImg() {						
@@ -16,12 +17,17 @@
 								
 				if(count % 2 == 1)		
 					//이미지 추가 코드
+					//document.body.innerHTML += "<img src = 'image/apple.png'>"
+					document.write("<img src = 'image/apple.png'>")
 				else
 					//이미지 추가 코드
-
+					//document.body.innerHTML += "<img src = 'image/bomb.png'>"
+					document.write("<img src = 'image/bomb.png'>")
+	
 				
 				if(count == 10) {
 					// 인터발 삭제
+					clearInterval(timerID);
 				}
 			}				
 		</script>		
