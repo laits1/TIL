@@ -8,9 +8,10 @@
 			$(document).ready(function() {
 				$('#img')
 					.on('mouseover', function(){	
-
+						$(this).attr('src','image/star.png');
 					 })
 					.on('mouseout', function(){
+						$(this).attr('src','image/heart.png');
 
 				});
 			 });

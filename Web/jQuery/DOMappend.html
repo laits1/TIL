@@ -17,43 +17,43 @@
 			   //[prepend] 버튼 클릭했을 때 
 			   $('#prepend').on('click', function(){				   
 			   	  //ID 선택자 box의 내부 요소들 맨 앞에 img 삽입
-
+					$('#box').prepend(img);	// img는 변수명
 			   });
 			   
 			   //[append] 버튼 클릭했을 때 			   
 			   $('#append').on('click', function(){
 				   //ID 선택자 box의 내부 요소들 맨 뒤에 img 삽입
-
+					$('#box').append(img);
 			   });	
 			   
 			  //[before] 버튼 클릭했을 때
 			  $('#before').on('click', function(){	
 				   //ID 선택자 box 앞에 img 추가 (div 영역 외부에 추가)
-
+				   $('#box').before(img);
 			   });			   
 			   
 			   //[after] 버튼 클릭했을 때
 			   $('#after').on('click', function(){	
 				  //ID 선택자 box 뒤에 img 추가 (div 영역 외부에 추가)							
-
+				  $('#box').after(img);
 			   });		
 			   
 			  //[empty] 버튼 클릭했을 때
 			   $('#empty').on('click', function(){	
 				  //ID 선택자 box 안의 요소들	제거				
-
+				  $('#box').empty();
 			   });	
 			 
 			  //[remove] 버튼 클릭했을 때
 			   $('#remove').on('click', function(){	
 				  //<img> 태그 제거					
-
+				  $('img').remove();
 			   });	
 			 
 			  //[초기화] 버튼 클릭했을 때
 			   $('#initiate').on('click', function(){	
 				   //<div> 내부 요소 비우고 추가
-
+					$('div').empty().append("div 내부 <img src='image/apple.png'>");
 			   });
 			});
 		</script>
