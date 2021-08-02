@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>text()/html()</title>
+		<script src="jquery-3.5.1.min.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			// 1. text() : <div> 태그의 문자열 반환(태그 제외)
+			var aText = $('#a').text();		
+			alert("text : " + aText);
+			
+			// 2. html() : <div> 태그의 문자열 반환(태그 제외)
+			var aHtml = $('#a').html();		
+			alert("text : " + aHtml);
+
+			// 3. html()와 text() 함수를 이용해 내부 요소 설정
+			// $('#b').text("<h1>jQuery</h1>");	// h1 태그가 해석이 안되면서 글자 그대로 출력
+			$('#b').html("<h1>jQuery</h1>"); // h1 태그를 해석하면서 태그 효과를 반영
+			
+		});
+
+
+		</script>
+	</head>
+	<body>
+		<div id="a"><h3>A</h3></div>
+        <div id="b"><h3>B</h3></div>
+	</body>
+</html>
+

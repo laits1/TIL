@@ -11,15 +11,15 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#off').on('mouseover', function(){		
-
+					$('img').fadeTo(1000, 0); // 완전 투명 해지면서 이미지가 사라짐, 영억은 그대로
 				}); 
 				
 				$('#on').on('mouseover', function(){	
-
+					$('img').fadeTo(1000, 1);  // 불투명
 				});
 		
 				$('#50').on('mouseover', function(){
-
+					$('img').fadeTo(1000, 0.5); // 반투명
 				});		
 			});
 		</script>     
