@@ -48,6 +48,8 @@ $(function() {
 
     });     // each 끝
 
-    
+    // 초기 슬라이더 위치 랜덤하게 지정
+    var randomNumber = Math.floor(Math.random() * 5);
+    moveSlide(randomNumber);
 
 });

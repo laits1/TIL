@@ -129,3 +129,22 @@ ul {
 	text-decoration:underline;
 	color:black;	
 }
+
+/* BOTTOM MENU  */
+
+#bottomMenuBox {
+    height: 30px;
+    line-height: 30px;
+}
+
+#bottomMenuBox li {
+    display: inline-block;
+    text-align:center;
+    padding:5px;
+}
+
+#bottomMenuBox a {
+    color:white;
+    font-weight: bold;
+    text-decoration: none;
+}
