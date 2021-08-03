@@ -56,6 +56,10 @@
 #prevButton:hover{opacity: 1;}
 #nextButton:hover{opacity: 1;}
 
-
-
+/* 컨트롤버튼 */
+#controlPanel {
+    margin: 0 auto;
+    width: 160px;
+}
+#controlPanel img{ float:left; margin:10px; }
 
