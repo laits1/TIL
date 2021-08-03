@@ -1,0 +1,15 @@
+@charset "UTF-8";
+/* index.css */
+
+/* Header */
+#headerBox {
+    height: 60px;
+    line-height: 60px; /* 줄간격 - 수직 가운데 정렬 효과 */
+    padding: 0;
+}
+
+#logoBox {
+    float:left;
+    height: 60px;
+    line-height: 60px;
+}
