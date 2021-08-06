@@ -363,3 +363,123 @@ print(res.read())
 b'\n<!doctype html>                          <html lang="ko" data-dark="false"> <head> <meta charset="utf-8"> <title>NAVER</title> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=1190"> <meta name="apple-mobile-web-app-title" content="NAVER"/> <meta name="robots" content="index,nofollow"/> 
 ```
 
+
+
+
+
+---
+
+---
+
+# 쇼핑몰 크롤링
+
+1.  requests.get(url)로 서버로부터 응답 권한이 있는지 확인.
+
+   - 403 Error 일 경우 / html.parser 이용
+
+     - ```python
+       res = urlopen(url)
+       bs_obj = BeautifulSoup(html, "html.parser")
+       ```
+
+     
+
+2. 페이지에서 상품전체를 나타내는 태그를 크롬 개발자도구를 이용해 찾는다.
+
+   - 모든 상품 정보가 들어있는 태그가 ``ul class="prdList grid4"`` 인 경우
+
+     - ```python
+       ul = bs_obj.find("ul", {"class":"prdList grid4})
+       ```
+
+   - ul 태그 안의 각각 제품들의 태그가 ``div class="box"`` 인 경우
+
+     - ```python
+       prd_boxes = ul.findAll("div",{"class":"box"})
+       ```
+
+     - ```python
+       print(len(prd_boxes)) # 로 상품의 개수가 알맞게 나왔는지 확인.
+       ```
+
+   - prd_boxes 태그 중 ``상품 제목``의 태그가 ``p class="name"``의 ``span`` 태그 인 경우
+
+     - ```python
+       # 첫번 째 제품명 출력
+       prd_boxes[0].find("p",{"class","name"}).find("span") .text
+       ```
+
+     - ```python
+       # 전체 상품명 출력
+       for box in prd_boxes:
+           p_tag = box.find("p",{"class":"name"})
+           span = p_tag.find("span")
+           print(span.text)
+       ```
+
+   - prd_boxes 태그 중 ``상품 가격``의 태그가 ul 태그 밑에 span 태그에 원래가격과 할인가격이 있다.
+
+     - ```python 
+       # 첫번째 제품의 할인 전 가격과 할인 후 가격 출력
+       price_ul = prd_boxes[0].find("ul")
+       price_span = price_ul.findAll("span")
+       # 할인 전 가격은 span의 1번 인덱스, 할인 후 가격은 마지막 인덱스에 있다.
+       print(price_span[1].text)	# 할인 전 가격
+       print(price_span[-1].text)  # 할인 후 가격
+       ```
+
+     - ```python
+       # 전체 가격 출력
+       for box in prd_boxes :
+           price_ul = box.find("ul")
+           price_span = price_ul.findAll("span")
+           print("가격 : ", price_span[1].text)
+           print("세일 가격 : ", price_span[-1].text)
+       ```
+
+       
+
+3.  수집한 데이터 DF 저장
+
+   - 수집 데이터를 저장할 빈 리스트 생성
+
+     - ```python
+       # 수집 데이터를 저장할 빈 리스트 생성
+       prd_list = []
+       price_list = []
+       sale_price_list = []
+       ```
+
+   - 각각 추출한 데이터 빈 리스트에 저장
+
+     - ```python
+       for box in prd_boxes :
+           # 제품명 추출 코드
+           p_tag = box.find("p",{"class":"name"})
+           span = p_tag.find("span")
+           # 가격 추출 코드
+           price_ul = box.find("ul")
+           price_span = price_ul.findAll("span")
+           # 최종 data 추출 후 리스트에 저장
+           prd_list.append(span.text)
+           price_list.append(price_span[1].text)
+           sale_price_list.append(price_span[-1].text)
+       ```
+
+   - 데이터 프레임에 저장하기
+
+     - ```python
+       prd_dict={"품목":prd_list,
+                 "가격":price_list,
+                 "세일가격":sale_price_list}
+       prd_df = pd.DataFrame(prd_dict,index=range(1,(len(prd_list)+1)))
+       ```
+
+   - 데이터 프레임 csv 파일로 저장하기
+
+     - ```python
+       prd_df.to_csv("./crawl_data/prd1page.csv")
+       ```
+
+       
+
