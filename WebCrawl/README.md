@@ -878,9 +878,89 @@ sub page에서 상품명, 상품 가격, 가게 위치 정보를 수집해서 �
 
 
 
+---
+
+----
+
+# 공공데이터 API 활용
+
+```
+공공데이터 포털 : 한국 관광공사 지역기반 행사 정보 조회
+https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15057787
+```
 
 
 
+
+
+1.  활용할 api의 endpint와 serviceKey 저장
+
+   - ```python
+     import requests
+     from bs4 import BeautifulSoup
+     
+     # url 및 서비스 키
+     endpoint = 'http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchFestival?'
+     serviceKey = '%2BLLqZA1QqtSEtr1Tkwof8BSkf14yznYnRQqU5bo0FydlhEz0L9dqbrjE75%2Ff%2FIPoKqOSJb4hQhtQj%2BTKx3aVjw%3D%3D'
+     
+     
+     ```
+
+   - 요청 변수 파라미터 저장
+
+     ```python
+     numOfRows = "50"
+     pageNo = "1"
+     MobileOS = "ETC"
+     MobileApp = "AppTest"
+     arrange = "A"
+     listYN = "Y"
+     areaCode ="1"
+     sigunguCode ="4"
+     eventStartDate = "20200101"
+     ```
+
+2.  요청할 URL은 endpint + paramset 이며 paramset은 요청 변수 파라미터 들을 연결한 주소들.
+
+   - ```python
+     paramset = "serviceKey=" + serviceKey +"&" \
+                 + "numOfRows=" + numOfRows +"&" \
+                 + "pageNo=" + pageNo +"&"  \
+                 + "MobileOS=" + MobileOS +"&"  \
+                 + "MobileApp=" + MobileApp + "&" \
+                 + "arrange="+ arrange + "&" \
+                 + "areaCode=" + areaCode + "&"\
+                 + "listYN=" + listYN + "&"  \
+                 + "eventStartDate=" + eventStartDate
+                 
+     url = endpoint + paramset
+     ```
+
+3.  url을 BeautifulSoup 객체로 저장하기
+
+   - ``` python
+     result = requests.get(url) # api 서비스 호출
+     bs_obj = BeautifulSoup(result.content, "html.parser")
+     
+     ```
+
+
+
+4. 원하는 정보(title, addr1, tel)가 bs_obj의 item 태그 밑에 있음.
+
+   - ```python
+     items = bs_obj.findAll('item')
+     
+     for item in items :
+         try :
+             print(item.find('title').text, end=',')
+             print(item.find('addr1').text, end=',')
+             print(item.find('tel').text)
+         except :
+             print(' No data ')
+     ```
+
+   - 
 
 
 
