@@ -373,6 +373,10 @@ b'\n<!doctype html>                          <html lang="ko" data-dark="false"> 
 
 # 쇼핑몰 크롤링
 
+### 쇼핑몰 상품 페이지에서 상품의 이름, 할인 전 가격, 할인 후 가격 추출 해서 DF에 넣고 csv파일로 저장하기
+
+
+
 1.  requests.get(url)로 서버로부터 응답 권한이 있는지 확인.
 
    - 403 Error 일 경우 / html.parser 이용
@@ -481,5 +485,404 @@ b'\n<!doctype html>                          <html lang="ko" data-dark="false"> 
        prd_df.to_csv("./crawl_data/prd1page.csv")
        ```
 
+
+
+
+
+
+---
+
+---
+
+
+
+# 구글맵스 geocode
+
+``` 
+경찰서을 불러서 구글지도에 마커 표시
+```
+
+
+
+1. 사용 데이터 프레임 불러오기
+
+   - ```python
+     crime_anal_police = pd.read_csv('./data/02. crime_in_Seoul.csv',
+                           thousands=',', # 천 단위 구분 기호 정수형태로 부르기
+                                    encoding='euc-kr')
+     ```
+
+2. googlemaps 패키지 import 후 googlemaps  클라이언트 생성
+
+   - ```python
+     import googlemaps # 안되면 pip install googlemaps
+     gmapsKey = 'api key'
+     gmaps = googlempas.Clinet(key=gmapsKey)
+     ```
+
+3. 경찰서 정보를 geocode를 이용해서 저장
+
+   - geocode('경찰서', language='ko')
+
+   - ```python
+     tmp = gmaps.geocode('서울중부경찰서', language='ko')
+     ```
+
+   - ```python
+     tmp[0]['formatted_adreess'] # '대한민국 서울특별시 중구 을지로동 수표로 27'
+     tmp[0]['geometry']['location']['lat'] # 37.5636465
+     tmp[0]['geometry']['location']['lng'] # 126.9895796
+     ```
+
+4. 모든 경찰서 정보 저장
+
+   - ```python
+     #데이터 저장할 빈 list 필요
+     station_address=[]
+     station_lat=[]
+     station_lng=[]
+     
+     for name in station_name :
+         # 각 경찰서에 대한 geocode 추출
+         tmp = gmaps.geocode(name, language='ko')
+         station_address.append(tmp[0].get('formatted_address')) # 경찰서 주소 저장 : dict.get(key) -> key에 대한 value 반환
+         
+         # 위 경도 추출
+         tmp_loc = tmp[0].get('geometry')
+     
+         station_lat.append(tmp_loc['location']['lat'])
+         station_lng.append(tmp_loc['location']['lng'])
+                                    
+     ```
+
+5.  DF으로 저장하기
+
+   - ```python
+     cols = {"경찰서명" : station_name,
+             "주소":station_address,
+             "lat":station_lat,
+             "lng":station_lng}
+     
+     df_police = pd.DataFrame(cols, index=range(1,(len(station_name)+1)))
+     df_police
+     ```
+
+6. DF을 .csv로 저장
+
+   ```python
+   df_police.to_csv("./crawl_data/서울시경찰서정보.csv")
+   ```
+
+
+
+
+
+---
+
+---
+
+# FOLIUM
+
+
+
+1. folium 패키지 : 지도 이용해 data 시각화  
+
+   ```python
+   import folium
+   map_osm = folium.Map(location=[45.5236, -122.67], zoom_start =13)
+   map_osm
+   ```
+
+   
+
+2.  위에 수집한 서울시 경찰서 위치를 지도에 시각화
+
+   - 수집한 경찰서 csv 파일 불러온 후 경찰서명,위도,경도 데이터 각각 리스트에 저장
+
+   - ```python
+     police_adr = pd.read_csv('./crawl_data/서울시경찰서정보.csv', index_col=0)
+     
+     police_lat = police_adr['lat']
+     police_lng = police_adr['lng']
+     police_info = police_adr['경찰서명']
+     
+     # 서울을 중심으로 지도를 다시 생성
+     map_police = folium.Map(location=[lat,lng], zoom_start = 18)
+     map_police
+     
+     ```
+
+   - for 문을 이용해 각 경찰서 위치에 마커 표시하기
+
+   - ```python
+     for k in range(1,len(police_info)+1) :
+         folium.Marker([police_lat[k],police_lng[k]], # 위경도
+                      popup = police_info[k],
+                      icon = folium.Icon(icon='info-sign')).add_to(map_police)
+     
+     ```
+
+   - 
+
+
+
+---
+
+---
+
+# 시카고 샌드위치 가게 정보 크롤링 지도 시각화
+
+```  
+'https://www.chicagomag.com/Chicago-Magazine/November-2012/Best-Sandwiches-Chicago/'
+
+위 사이트에서 main url에서 가게 순위, 가게명, sub page 링크
+sub page에서 상품명, 상품 가격, 가게 위치 정보를 수집해서 구글 지도에 위치를 마커 표시하기.
+```
+
+
+
+1. BeautifulSoup 객체에 넣기 위해 변수 작업
+
+   - HTTP Error 403 에러 피하기 위해 header 설정
+
+     - ```python
+       req = Request(url, headers={'User-Agent':'Mozilla/5.0'})
+       res = urlopen(req)
        
+       soup_obj = BeautifulSoup(res, "html.parser")
+       ```
+
+2.  url에서 랭킹 정보가 들어있는 태그를 찾기.
+
+   - 사이트 내 랭킹 정보가 div class="sammy" 태그 밑에 있음
+
+     - ```python
+       # div class="sammy"에 저장된 모든 샌드위치 랭킹정보를 저장.
+       soup_list = soup_obj.findAll('div',{"class":"sammy"})
+       ```
+
+   - 가게 순위는 class="sammyRank", 상호명은 class="sammyListing", 서브 페이지 url은 a href= 태그 밑에
+
+3.  50개의 가게 정보를 리스트에 저장
+
+   - list에 저장
+
+     - ```python
+       rank =  []
+       main_menu = []
+       cafe_name = []
+       url_link = []
+       
+       # soup_list안의 레스토랑 각각에 대한 정보를 추출해서 list에 저장하는 코드
+       for item in soup_list : #레스토랑 1개의 정보가 item에 저장
+           rank.append(item.find(class_='sammyRank').get_text())
+           tmp_listing = item.find(class_="sammyListing").get_text()
+           main_menu.append(tmp_listing.split('\n')[0])
+           cafe_name.append(tmp_listing.split('\n')[1])
+           url_link.append(urljoin(url_base,item.find('a')['href']))
+       ```
+
+4. 수집한 자료를 df로 저장후 csv로 파일 저장
+
+   - ```python
+     # 수집한 자료를 df로 만들어서 csv로 저장
+     data = {'Rank':rank, 'Cafe':cafe_name, 'Menu':main_menu, 'URL':url_link}
+     
+     df = pd.DataFrame(data)
+     # df
+     df.to_csv('./crawl_data/시카고샌드위치가게.csv',sep=',',encoding='utf-8')
+     ```
+
+5.  각 가게의 위치 주소와 가격이 각 서브 페이지 링크의 p class="addy" 에 있는 것을 접근 해 저장하기
+
+   - ```python
+     req = Request(df['URL'][0], headers={'User-Agent':'Mozilla/5.0'})
+     res = urlopen(req)
+     soup_tmp = BeautifulSoup(res,'html.parser')
+     temp_string = soup_tmp.find('p','addy').get_text() # 가격과 주소
+     ```
+
+   - 주소, 가격 추출
+
+     ```python
+     temp_stinrg # $10. 2109 W. Chicago Ave., 773-772-0406, theoldoaktap.com
+     
+     # 띄어쓰기 단위로 스플릿
+     temp_string.split() #['$10.', '2109', 'W.', 'Chicago', 'Ave.,', '773-772-0406,', 'theoldoaktap.com']
+     
+     # 주소는 [1]번 인덱스 부터 뒤에서 2번째 인덱스 전[-2] 까지 리스트 형태를 ' '로 join 해 str으로 만들기
+     ' '.join(temp_string.split([1:-2]) # 2109 W. Chicago Ave.,
+              
+     # 가격 추출, 가격은 temp_string.split()의 0번인덱스고 가격의 마지막이 , 빼고 추출하기 위해 [0][-1]로 추출
+     temp_string.split()[0][-1]
+     ```
+
+   - 전체 가격과 주소 추출
+
+     ```python
+     # 가격과 주소를 저장할 빈 리스트 생성
+     price = []
+     address []
+     
+     # DF에 저장된 URL을 활용해 모든 price와 address 추출
+     for i in df.index :
+         req = Request(df['URL'][i],headers={'User-Agent':'Mozilla/5.0'}) # 객체 생성
+         html = urlopen(req) # 요청후 응답 반환
+         soup_tmp = BeautifulSoup(html,'html.parser') #bs 객체 생성
+         temp_string = soup_tmp.find('p','addy').get_text() # 주소와 가격이 포함된 정보 추출
+         price.append(temp_string.split()[0][:-1]) # 추출한 정보에서 가격을 분리해서 list에 저장
+         address.append(' '.join(temp_string.split()[1:-2])) # 추출한 정보에서 주소를 분리해서 list에 저장
+     
+     ```
+
+     
+
+6.  여러 번 반복 접근을 해야 하므로 상태 진행바를 통해서 진행 상태 확인
+
+   - ```python
+     from tqdm import tqdm_notebook # 반복문의 반복 요소에 적용시키면 반복요소가 얼마나 진행되었는지 상태바를 표시
+     
+     price = []
+     address = []
+     
+     for i in tqdm_notebook(df.index) :
+         req = Request(df['URL'][i],headers={'User-Agent':'Mozilla/5.0'}) # 객체 생성
+         html = urlopen(req) # 요청후 응답 반환
+         soup_tmp = BeautifulSoup(html,'html.parser') #bs 객체 생성
+         temp_string = soup_tmp.find('p','addy').get_text() # 주소와 가격이 포함된 정보 추출
+         price.append(temp_string.split()[0][:-1]) # 추출한 정보에서 가격을 분리해서 list에 저장
+         address.append(' '.join(temp_string.split()[1:-2])) # 추출한 정보에서 주소를 분리해서 list에 저장
+     
+     ```
+
+7.  수집된 각 cafe의 pirce와 address를 df에 추가
+
+   - ``` python
+     df['price'] = price
+     df['adress'] = address
+     ```
+
+   - Rank 컬럼을 index로 설정
+
+     ````python
+     df.set_index("Rank", inplace = True)
+     ````
+
+   - df를 csv로 저장
+
+     ```python
+     df.to_csv('./crawl_data/시카고샌드위치_주소.csv',sep=',',encoding='utf-8')
+     ```
+
+
+
+## 수집된 주소를 이용해서 각 상점의 위경도 찾아오고 FOLIUM해서 cafe 마커
+
+1. 필요 패키지 import 및 데이터 읽어오기
+
+   - ```python
+     import googlemaps 
+     import folium
+     import pandas as pd
+     ## 데이터 읽어오기
+     df = pd.read_csv('./crawl_data/시카고샌드위치_주소.csv',index_col=0)
+     df.head()
+     
+     ```
+
+2. 구글 클라이언트 등록키를 이용해서 client 객체 생성
+
+   - ```python
+     gmapsKey = 'AIzaSyDaavIigsdXYCOaBIG_Gt-S0mScya5TWbE'
+     gmaps = googlemaps.Client(key = gmapsKey)
+     ```
+
+3. 상점의 위경도 찾고 DF에 저장
+
+   - 미국 주 이름앞에는 ,가 와야함(두번있어도 상관 없음 단, 없으면 안됨)
+
+     ```python
+     # 원래 주소 2109 W. Chicago Ave., 를 2109 W. Chicago Ave.,,Chicago 형태로 해주어야 함.
+     target_name = df['address'][1] + "," + "Chicago" 
+     
+     ```
+
+   - gmaps.geocode 를 이용해 위경도 찾기 
+
+     ```python
+     g_info = gmaps.geocode(target_name)
+     g_lo = g_info[0].get("geometry")['location']
+     g_lo['lat']
+     g_lo['lng']
+     ```
+
+   - 50개의 위경도 찾아오기
+
+     ```python
+     # 50개 위경도 찾아오기
+     lat=[]
+     lng=[]
+     
+     from tqdm import tqdm_notebook
+     for n in tqdm_notebook(df.index) :
+         target_name = df['address'][n] +','+ 'Chicago'
+         g_info = gmaps.geocode(target_name)
+         g_lo =g_info[0].get("geometry")['location']
+         lat.append(g_lo['lat'])
+         lng.append(g_lo['lng'])
+     
+     ```
+
+     
+
+   - 찾으 위경도 DF에 저장하고 csv파일로 저장
+
+     ```python
+     df['lat'] =lat
+     df['lng'] = lng
+     df.to_csv('./crawl_data/시카고샌드위치위경도포함.csv')
+     ```
+
+     
+
+4. 전체 cafe의 위치에 Marker 표시하기
+
+   - 마커를 위한 기본 맵 변수 생성
+
+     ```python
+     lat_c = df['lat'].mean()
+     lng_c = df['lng'].mean()
+     map_fin = folium.Map(location=[lat_c,lng_c], zoom_start=11)
+     
+     ```
+
+   - for문을 통해 모든 카페 위치에 Marker 표시
+
+     ```python
+     for n in df.index :
+         folium.Marker([df['lat'][n],df['lng'][n]],
+                       popup=df['Cafe'][n]).add_to(map_fin)
+     
+     map_fin
+     ```
+
+   - 지도 저장
+
+     ```python
+     map_fin.save('./crawl_data/시카고카페.html')
+     ```
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
 
