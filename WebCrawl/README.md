@@ -964,5 +964,83 @@ https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15057787
 
 
 
+---
 
+---
+
+# 네이버 검색 API
+
+```
+네이버 블로그에 강남역 검색 API
+```
+
+
+
+1. json() 형태로 검색결과 불러오기
+
+   - 필요한 패키지 import
+
+     ```python
+     import os
+     import sys
+     import urllib.request
+     ```
+
+   - 네이버 개발자 센터에서 본인의 API ID와 secret을 변수에 저장
+
+     ```python
+     ## id와 key 변수에 저장
+     client_id = "my_id"
+     client_secret = "my_secret"
+     ```
+
+   - 원하는 검색어 utf-8로 인코딩해 변수에 저장
+
+     ```python
+     enc_text = urllib.parse.qoute("강남역")
+     ```
+
+   - url 작업 및 헤더 작업 후 서버에 요청
+
+     ```python
+     # json 형태의 기본 url_base
+     url_base = 'https://openapi.naver.com/v1/search/blog?query='
+     
+     # 검색 결과 100개로 늘리기
+     
+     search_ = "&display=100"
+     
+     # url_base에 원하는 검색어 변수를 연결해 url 생성
+     url = url_base + enc_text + search_ 
+     
+     
+     
+     #get()안에 url과 headers를 포함 할 수 있음
+     result = requests.get(url,
+           headers={"X-Naver-Client-Id":client_id,
+                    "X-Naver-Client-Secret":client_secret})
+     ```
+
+   - 검색된 결과를 json 형태로 읽어오기
+
+     ```python
+     json_obj = result.json()
+     
+     ```
+
+     
+
+2. 불러온 json() 형태에서 특정 속성값 추출
+
+   - 제목 추출
+
+     ```python
+     # 찾고자 하는 제목 데이터는 json의 items 밑에 title에 있음
+     # 제목에 불필요한 단어를 제거(<b></b> 같은거)
+     for item in json_obj["items"] :
+         print(item["title"].replace("<b>","").replace("</b>",""))
+         
+     ```
+
+     
 
