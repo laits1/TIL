@@ -1,0 +1,25 @@
+1. 가상환경 생성 - 프로젝트
+2. Django install(터미널)
+	- pip install django
+
+3. django 프로젝트 시작
+django-admin startporject ToDoList
+
+4. django app 시작(필요한 만큼 생성)
+python manage.py startapp my_to_do_app
+4-1 생성된 app는 프로젝트에 등록 해야 함
+
+** 생성된 파이참 프로젝트 이름 : ToDoList
+** 생성된 장고 프로젝트 이름 : ToDoList > settings.py 
+* 생성된 app 이름 : my_to_do_app
+
+
+- settings.py 파일 열고
+INSTALLED_APP = []에 앱 이름 등록
+
+- Django migrate 진행
+데이터베이스에 테이블, 필드 등의 변경이 발생했을 때 지정된 데이터베이스에 적용하는 과정을 의미
+python manage.py migrate
+
+
+python manage.py runserver
