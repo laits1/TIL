@@ -2,6 +2,8 @@
 2. Django install(터미널)
 	- pip install django
 
+ToDoList 폴더 생성
+
 3. django 프로젝트 시작
 django-admin startporject ToDoList
 
@@ -15,11 +17,92 @@ python manage.py startapp my_to_do_app
 
 
 - settings.py 파일 열고
-INSTALLED_APP = []에 앱 이름 등록
+INSTALLED_APP = 'my_to_do_app' 추가 해서 앱 이름 등록
 
 - Django migrate 진행
 데이터베이스에 테이블, 필드 등의 변경이 발생했을 때 지정된 데이터베이스에 적용하는 과정을 의미
 python manage.py migrate
 
-
+6.  서버구동 코드
 python manage.py runserver
+
+연결주소
+http://127.0.0.1:8000
+http://localhst:8000
+
+현재 개발중인 컴퓨터에서 프로그램 번호가 8000번(장고)인 프로그램으로 요청을 보낼것
+
+===================================================
+## 프로젝트 개발
+1. http://127.0.0.1:8000 으로 클라이언트가 요청하면 브라우저에 index 라는 문구를 출력
+
+1) url 구성 : 기능별로 구성파일을 분리해서 개발
+
+가) ToDoList.urls.py 파일에서 진행
+path('',include('my_to_do_app.url')),
+": http://127.0.0.1:8000
+include('my_to_do_app.url') : 요청에 의한 처리 함수는 my_to_do_app.urls.py에가서 한번 더 확인할 것
+
+나) 새로 my_to_do_app.urls.py 파일 생성
+
+my_to_do_app.views.py 파일에서 진행
+
+2) 요청시 처리할 코드
+my_do_do_app.views.py 파일에서 진행
+  return HttpResponse("my_to_do_app first page")
+  # 요청에 대한 응답객ㅊ에를 생성해서 바로 클라이언트로 반환
+
+2. 템플릿(front_end 파일 연결)
+1) 클라이언트 요청시 전송될 파일 저장(저장폴더 결정)
+settings.py 에 의해 템플릿은
+my_to_do_app > Templates > my_to_do_app > *.html/*.css/*.js
+
+
+2) my_to_do_app > views.py 파일
+html 파일을 rendering 하도록 코드를 수정
+return render(request객체, 반환해줄 html 경로 파일명)
+
+3. 메모하기 버튼 동작 코드 생성
+기능 : 사용자가 입력한 data를 db에 저장
+1) html form 태그의 action 속성 지정 (url 구성)
+<form action = "./createTodo/"
+https://127.0.0.1:8000/createTodo/
+
+
+2) url 구성
+
+3) views.py에서 처리 코드 생성
+
+def createTodo(request) :
+
+    return HttpResponse("create toDo 메모 작성 ")
+
+ # 사용자가 메모에 입력해서 넘긴 값을 반환하는 코드
+html 파일에서 어떤 name으로 값이 전달되는지 확인 : todoContent 변수에 입력된 data 가 담겨서 서버로 전달
+
+<input id="todoContent" name="todoContent"
+method = "POST" 로 설정되어 있음
+
+def createTodo(request) :
+    # 사용자가 메모에 입력해서 넘긴 값을 반환하는 코드
+    user_input_str = request.POST['todoContent']
+    return HttpResponse("입력한 메모 data는 : " + user_input_str)
+    # return HttpResponse("create toDo 메모 작성 ")
+
+
+# 사용자가 입력해서 넘긴 값을 DB에 저장
+
+4) DB 관련 코딩
+models.py – 테이블 정의 ( class로 생성 models.Model 을 상속받아서 생성)
+admins.py – 정의된 테이블이 admin 화면에 보이게 함
+manage.py makemigrations – 데이터베이스에 변경이 필요한 사항을 추출
+manage.py migrate – 데이터베이스에 변경사항을 반영
+manage.py runserver – 현재까지 작업 개발을 웹서버로 확인
+
+
+
+
+
+
+
+
