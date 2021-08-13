@@ -16,5 +16,5 @@ def createTodo(request) :
     new_todo = Todo(content=user_input_str) # insert into todo(content) values (input_str)
     new_todo.save() # db에 반영
 
-    return HttpResponse("입력한 메모 data는 : " + user_input_str)
+    return HttpResponse("입력한 메모 data는 : " + user_input_str + "는 DB에 저장되었습니다.")
     # return HttpResponse("create toDo 메모 작성 ")
