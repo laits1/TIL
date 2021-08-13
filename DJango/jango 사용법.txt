@@ -1,0 +1,175 @@
+1. 가상환경 생성 - 프로젝트
+
+2. Django install(터미널)
+	- pip install django
+
+3. django 프로젝트 시작
+django-admin startproject ToDoList
+
+4. django app 시작(필요한 만큼 생성)
+python manage.py startapp my_to_do_app
+4-1 생성된 app는 프로젝트에 등록 해야 함
+
+** 생성된 파이참 프로젝트 이름 : ToDoList
+** 생성된 장고 프로젝트 이름 : ToDoList > settings.py 에  앱 등록
+** 생성된 app 이름 : my_to_do_app
+
+- settings.py 파일 열고
+INSTALLED_APPS =[] 에 앱 이름 등록
+
+5. Django migrate 진행
+데이터베이스에 테이블, 필드 등의 변경이 발생했을 때 지정된 데이터베이스에 적용하는 과정을 의미
+- 프로젝트 생성 후 기본 마이그레이션 진행
+python manage.py migrate
+
+6. 서버 구동 코드
+python manage.py runserver
+
+연결주소
+http://127.0.0.1:8000
+http://localhost:8000
+현재 개발중인 컴퓨터에서 프로그램번호가 8000번(장고)인 프로그램으로 요청을 보낼것
+
+http://127.0.0.1:8000/ToDoList
+
+
+#### 프로젝트 개발
+1. http://127.0.0.1:8000 으로 클라이언트가 요청하면 브라우저에 index 라는 문구를 출력
+1) url 구성 : 기능별로 구성 파일을 분리해서 개발
+가)ToDoList.urls.py 파일에서 진행
+path('',include('my_to_do_app.urls')),
+'' : http://127.0.0.1:8000
+include('my_to_do_app.urls') : 요청에 의한 처리 함수는 my_to_do_app.urls.py 에가서 한번 더 확인할 것
+나) 새로 my_to_do_app.urls.py 파일 생성
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('',views.index,name='index'),
+    # root url conf에 의해서 http://127.0.0.1:8000의 요청이 전달되면
+    # views.py 파일의 index 함수 코드를 실행
+    # http://127.0.0.1:8000 url의 별명은 'index'
+    ]
+
+
+2) 요청시 처리할 코드 생성
+my_do_do_app.views.py 파일에서 진행
+
+가)my_do_do_app.views.py에 index 함수 생성
+def index(request) :
+    return HttpResponse("my_to_do_app first page")
+    # 요청에 대한 응답객체를 생성해서 바로 클라이언트로 반환
+
+2. 템플릿(front_end 파일 연결)
+1) 클라이언트 요청시 전송될 파일 저장(저장 폴더 결겅)
+settings.py 에 의해 템플릿은
+my_to_do_app > Templates > my_to_do_app > *.html/*.css/*.js
+
+2) my_to_do_app>views.py 파일
+html 파일을 rendering 하도록 코드를 수정
+reutrn render(request객체,반환해줄 html 경로 파일명)
+
+3. 메모하기 버튼 동작 코드 생성
+기능 : 사용자가 입력한 data를 db에 저장
+
+1) html form 태그의 action 속성 지정(url 구성)
+<form action="./createTodo/"
+https://127.0.0.1:8000/createTodo/
+
+2) url 구성
+
+
+3) views.py 에서 처리 코드 생성
+
+def createTodo(request) :
+    return HttpResponse("create toDo 메모 작성 합니다!!!!!") # 요청에 응답하는지만 확인
+
+# 사용자가 메모에 입력해서 넘긴 값을 반환하는 코드
+html 파일에서 어떤 name 으로 값이 전달되는지 확인 :todoContent 변수에 입력된 data가 담겨서 서버로 전달
+<input id="todoContent" name="todoContent" 
+method="POST" 로 설정되어 있음
+def createTodo(request) :
+    # 사용자가 메모에 입력해서 넘긴 값을 반환하는 코드
+    user_input_str = request.POST['todoContent']
+    return HttpResponse("입력한 메모 data는 : "+ user_input_str)
+
+# 사용자가 입력해서 넘긴 값을 DB에 저장
+
+4) DB 관련 코딩
+models.py – 테이블 정의 (class로 생성 models.Model 을 상속받아서 생성)
+admins.py – 정의된 테이블이 admin 화면에 보이게 함
+manage.py makemigrations – 데이터베이스에 변경이 필요한 사항을 추출
+manage.py migrate – 데이터베이스에 변경사항을 반영
+manage.py runserver – 현재까지 작업 개발을 웹서버로 확인
+
+가) 모델 생성
+from django.db import models
+
+# Create your models here.
+class Todo(models.Model) : # models.Model  을 상속받아 Django 모델 class 생성
+    # 컬럼 지정
+    content = models.CharField(max_length=255) # 교재 175쪽
+
+나) 모델의 변경사항 추출
+python manage.py makemigrations
+
+다) 변경된 모델 사항 DB에 반영
+python manage.py migrate
+
+라) dbshell 이용해서 변경사항 db에 반영되었는지 확인
+python manage.py dbshell
+
+.tables
+PRAGMA table_info( my_to_do_app_todo)
+
+
+4. 기존에 db에 저장되어 있떤 메모내용을 화면에 출력하기
+1) 127.0.0.1:8000/ => 기본 요청시 출력되는 화면에 기존 메모 모두 출력
+기본요청 사용 Template : index.html
+기본요청을 처리하는 함수 : my_to_do_app > views.py의 index 함수
+
+가) index 함수 수정
+- DB의 my_to_do_app_todo 테이블에서 모든 row를 select 해서 template(index.html을 rendering 처리 함) render
+
+- db 관련 코드 작성 (index 함수에서 처리
+- index.html로 render 코드(index함수)
+- index.html 파일에 
+- index.html 파일에 넘어온 DB 결과를 html코드로 작성할 수 있게 파일 수정
+
+# {} Django 템플릿 태그(p162) : 서버에서 해석한 후에 클라이언트로 보내야 하는 태그
+{% %} : 파이썬 문법
+{% csrf_token %}
+
+{{ }} : 사용자에게 직접 보여주는 값을 표현
+
+
+5. 기존 메모 삭제하기
+1) index.html을 수정해서 기존 메모의 id 값이 서버로 전달되게 작성
+<form action="./doneTodo/" method="GET">
+                        <div class="input-group" name='todo1'>
+                            <li class="list-group-item">{{ todo.content }}</li>
+                            <input type="hidden" id="todoNum" name="todoNum" value="{{todo.id}}"></input>
+                            <span class="input-group-addon">
+                                <button type="submit" class="custom-btn btn btn-danger">완료</button>
+                            </span>
+                        </div>
+                    </form>
+
+2) 삭제와 관련된 url을 생성 (my_to_do_app > urls.py)
+http://127.0.0.1:8000/doneTodo/ 으로 요청이 들어옴
+
+
+3) views.py 파일에 삭제 처리할 함수 생성
+- 삭제가 완료된 후에는 기본페이지로 redirect 시켜야 함
+
+
+
+
+
+
+
+
+
+
+
+
