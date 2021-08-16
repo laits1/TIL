@@ -19,7 +19,7 @@
 
 
 
-3. django app 시작(필요한 만큼 생성)
+3. Application 구성하기
 
    - ToDoList 디렉터리 에서 python manage.py startapp my_to_do_app
 
@@ -27,7 +27,9 @@
 
 
 
-4. ToDoList/settings.py 파일 열고 INSTALLED_APPS ='my_to_do_app' 에 앱 이름 등록
+4. App 구성 시 settings.py에 NSTALLED_APPS = '앱' 추가를 해야한다. 
+
+   - ToDoList/settings.py 파일 열고 INSTALLED_APPS ='my_to_do_app' 에 앱 이름 등록
 
    ​	![](pic/settings1.png)
 
@@ -52,9 +54,19 @@
 
 
 
-7.  ToDoList/urls.py 수정
+7. runserver 했을 때 접속 페이지를 변경하기 위해서 urls.py 수정
 
    ```python
+   path('admin/', admin.site.urls)
+   ```
+
+   - 코드는 사용자가 admin/ 에 접근했을 때 실제로는 http://127.0.0.1:8000/admins에 접근 했을 때 admin.site.urls로 접근하라는 의미. 
+   - 우리는 사용자가 접근했을 때 기본 ToDoList 화면을 보여주려고 한다. 그 화면은 my_to_do_app 이라고 application을 만들었다.
+   - 그러므로 my_to_do_app 이라는 app의 urls.py 파일로 처리를 넘겨주어야 한다. 
+   - path('', include('my_to_do_app.urls')) 를 추가한다. (include 함수를 import에 추가한다.)
+
+   ```python
+   #ToDoList/ToDoList/urls.py
    from django.contrib import admin
    from django.urls import path, include
    
@@ -82,7 +94,11 @@
 
 
 
-9. my_to_do_app/views.py 수정후 run server로 확인
+9. views.py에 사용할 함수를 만들면, 그 함수를 urls.py에서 사용할 수 있다.
+
+   - urls.py에서 특정위치로 접근한 사용자에게 어떤 화면을 보여줄지 실제로 처리하는 것이 views.py 파일
+
+   - urls.py 파일에서 index 함수를 처리하도록 했으므로 다음과 같이 index 함수를 생성한다.
 
    ```python
    from django.shortcuts import render
@@ -93,24 +109,35 @@
        return HttpResponse("my_to_do_app first page")
    ```
 
+   - 여기까지 작성하고, python manage.py runserver를 실행하면, my_to_do_app first page 문구가 나오는 화면을 볼 수 있다.
 
+   
 
-10.  my_to_do_app/Templates/my_to_do_app/index.html 생성
+10.  HTML 템플릿 사용
 
+- ToDoList 페이지가 조금 꾸며진 HTML 템플릿을 사용하기 위해서 my_to_do_app 폴더 밑에 templates 폴더 만들고 , 그 안에 my_to_do_app 폴더를 만든다.
+- 장고는 HTML 파일을 템플릿을 사용할 때, 해당 앱에서 ``templates`` 라는 폴더를 탐색한다.
+- 그리고 동일한 앱의 이름으로 된 폴더를 찾아 그 내부에 있는 html 파일을 불러와 사용한다.
+- 따라서 html 파일을 사용할 때 항상 app 내부에 templates 라는 폴더와 templates 라는 폴더 내부에 app 이름과 동일한 폴더가 존재하고, 그안에 html 파일이 존재 해야한다.
+- templates 폴더에 index.html 파일 복사
 
+ 
 
-11. my_to_do_app/views.py 수정
+11. index.html 을 웹 브라우저에 보여주기위한 처리는 views.py 에서한다
 
-    ```python
-    from django.shortcuts import render
-    from django.http import HttpResponse
-    
-    # Create your views here.
-    def index(request) :
-        return render(request,'my_to_do_app/index.html')
-        # 요청에 대한 응답객체를 생성해서 바로 클라이언트로 반환
-    
-    ```
+- html 파일을 사용자에게 보여 주려면 render 함수를 사용
+- 
+
+```python
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+def index(request) :
+    return render(request,'my_to_do_app/index.html')
+    # 요청에 대한 응답객체를 생성해서 바로 클라이언트로 반환
+
+```
 
 
 
@@ -256,5 +283,8 @@ runserver 해서 메모버튼 클릭시 추가되는지 확인
         return HttpResponseRedirect(reverse('index'))
     ```
 
-    
+
+
+
+page 138
 
