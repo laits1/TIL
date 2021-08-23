@@ -1,0 +1,131 @@
+> pip install django
+
+> django-admin startproject config .
+
+> django-admin startapp accounts
+
+> django-admin startapp main
+
+@
+config/settings.py
+14 -> import os
+44 -> 'account',
+45 -> 'main',
+64 -> os.path.join(BASE_DIR, 'config', 'templates'),
+114 -> LANGUAGE_CODE = 'ko-kr'
+116 -> TIME_ZONE = 'Asia/Seoul'
+128~136
+STATIC_URL = '/static/' # css나 image 등 파일 경로를 찾을 때 /static/파일명 으로 찾아야함
+
+STATIC_DIRS = [ # 서버에 저장할 경로
+    os.path.join(BASE_DIR, 'config', 'static')
+]
+
+#Media files : 동영상 소리 파일
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+@
+config/test.py 생성
+
+from pathlib import Path
+import os
+BASE_DIR = Path(__file__).resolve().parent.parent
+print(os.path.join(BASE_DIR,'config','templates'))
+
+@
+config/templates 디렉터리 생성
+
+@
+배부된 static 폴더
+config/static폴더에 복사이동
+
+@
+배부된 templates 폴더
+config/templates 폴더에 파일 복사 이동
+
+@
+배부된 templates_accounts 폴더 안의 templates 폴더를 
+acounts 에 복사
+
+@
+배부된 templates_main 압축풀고 templates 폴더를
+main 폴더 밑에 복사
+
+@
+config/urls.py
+17 -> from django.urls import path, include
+21 -> path('',include('main.urls'), name='insta'),
+
+@
+main폴더 밑에 urls.py 파일 생성
+from django.urls import path, include
+from main.views import index
+
+
+app_name = 'insta' # front(html 파일)에서 url을 쉽게 조합하기 위해서도 사용됨
+
+urlpatterns = [
+    path('', index, name='index'),
+
+]
+
+
+@ main/views.py
+
+from django.shortcuts import render
+
+# Create your views here.
+
+def index(request) :
+    return render(request, 'main/index.html')
+
+
+@ runserver 안될텐데 
+index.html 파일을 main/templates에
+
+
+@ 
+python manage.py createsuperuser
+사용자 이름  root
+이메일 : 아무거나
+password : 0000
+
+
+@ 
+
+python runserver
+
+127.0.0.1:8000/admin
+
+
+@
+
+config/urls.py
+
+22 -> path('account/', include('accounts.urls'), name='accounts'),
+
+
+
+@ accounts/urls.py 생성
+from django.urls import path, include
+from main.views import index
+from django.contrib.auth import views as auth_views
+from . import views
+
+app_name = 'accounts'
+
+urlpatterns = [
+    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('signup/', views.signup, name='signup'),
+
+]
+
+@ config/settings.py
+134~136
+# 로그인 성공후 이동하는 URL
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/;
