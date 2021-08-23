@@ -1,0 +1,59 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Title</title>
+    {%load static%}
+    <link rel="stylesheet" href="{% static 'css/reset.css'%}">
+    <link rel="stylesheet" href="{% static 'css/common.css'%}">
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+
+
+</head>
+<body>
+{%load static%}
+
+<section id="container">
+
+
+    <header id="header">
+        <section class="inner">
+
+            <h1 class="logo">
+                <a href="index.html">
+                    <div class="sprite_insta_icon"></div>
+                    <div class="sprite_write_logo"></div>
+                </a>
+            </h1>
+
+            <div class="search_box">
+                <input type="text" placeholder="검색" id="search-field">
+
+                <div class="fake_field">
+                    <span class="sprite_small_search_icon"></span>
+                    <span>검색</span>
+                </div>
+            </div>
+
+            <div class="right_icons">
+                <a href="new_post.html"><div class="sprite_camera_icon"></div></a>
+                <a href="login.html"><div class="sprite_compass_icon"></div></a>
+                <a href="follow.html"><div class="sprite_heart_icon_outline"></div></a>
+                <a href="profile.html"><div class="sprite_user_icon_outline"></div></a>
+            </div>
+
+        </section>
+
+    </header>
+<!-- 각기 다른 content -->
+    {% block content %}
+    {% endblock %}
+</section>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
