@@ -1,7 +1,27 @@
 conda create -n ai01 python=3.8 openssl
 
 conda activate ai01
-
 conda deactivate
 
 pip install numpy
+
+
+
+c:\projects\project_ai
+/01_sklearn
+  01_functional.py
+  01_machine_learning.py
+pip install sklearn
+  02_weight_height.py
+
+교육부 학생건강검사 결과분석
+weight_height.csv
+pip install pandas
+
+
+
+
+
+
+
+
