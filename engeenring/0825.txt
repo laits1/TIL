@@ -1,0 +1,7 @@
+conda create -n ai01 python=3.8 openssl
+
+conda activate ai01
+
+conda deactivate
+
+pip install numpy
