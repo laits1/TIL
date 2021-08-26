@@ -42,7 +42,7 @@ boy_df, girl_df = df[is_boy], df[~is_boy]
 
 x = girl_df["weight"]
 y = girl_df["height"]
-
+print(type(x))
 
 
 # train / test set 분리
