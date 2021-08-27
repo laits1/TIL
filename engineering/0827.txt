@@ -1,0 +1,8 @@
+C:\ProgramData\Anaconda3
+
+conda create -n ai02 python=3.7 openssl
+
+
+파이참 -> 파일 -> settings -> project: engineering -> python interpreter -> 오른쪽 위 톱니바퀴 -> show all -> + 클릭 -> conda Environment -> existing environment -> ai02 
+
+conda install tensorflow==1.15 -y
