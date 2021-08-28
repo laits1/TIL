@@ -15,6 +15,8 @@ print(type(data_C))
 x = data_C
 y = data_F
 
+print(y)
+
 # 데이터 분할
 train_X, test_X, train_y, test_y = train_test_split(x, y, test_size=0.3, random_state=1)
 #
