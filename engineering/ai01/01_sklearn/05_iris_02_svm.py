@@ -12,7 +12,7 @@ train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.3, random_
 
 
 # 3. 모델 준비
-svm = SVC(kernel="linear")
+svm = SVC(kernel="linear", C = 0.01)
 
 # 4. 학습
 svm.fit(train_X, train_y)
