@@ -173,17 +173,52 @@ pred = logistic.predict(test_X)
 
 ---
 
-##  4. KNN
+##  4. KNN(KNeighborsClassifier)
 
-1. 
+1. KNeighborsClassifier() 함수 사용을위해 ``sklearn.neighbors`` 호출
 
 ```python
-from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
 ```
 
-2. KNN 예제
+2. 
 
 ```python
+classifier = KNeighborsClassifier(n_neighbors = 3)
+```
+
+- n_neighbors = k 
+  - k개의 샘플 설정, 기본 값은 None
+
+3. KNN 예제
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+
+# 1. 데이터 준비
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+
+# 2. 데이터 분할
+train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.3, random_state=1)
+
+
+# 3. 모델 준비
+knn = KNeighborsClassifier()
+
+# 4. 학습
+knn.fit(train_X, train_y)
+
+# 5. 예측 및 평가
+pred = knn.predict(test_X)
+for i in range(len(test_X)):
+    print(test_X[i], "예측 : ", iris.target_names[pred[i]], "\t 실제 : ", iris.target_names[test_y[i]])
+
+print(knn.score(test_X, test_y))
 ```
 
 
@@ -201,13 +236,17 @@ from sklearn.linear_model import LogisticRegression
 1. 
 
 ```python
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 ```
 
 2. SVM예제
 
 ```python
+# 3. 모델 준비
+svm = SVC(kernel="linear")
 
+# 4. 학습
+svm.fit(train_X, train_y)
 ```
 
 
@@ -221,13 +260,22 @@ from sklearn.linear_model import LogisticRegression
 1. 
 
 ```python
-from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 ```
 
 2.  예제
 
 ```python
+# 2. 데이터 분할
+train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.3, random_state=1)
 
+
+# 3. 모델 준비
+d_tree = DecisionTreeClassifier()
+
+
+# 4 . 학습
+d_tree.fit(train_X, train_y)
 ```
 
 
@@ -241,12 +289,22 @@ from sklearn.linear_model import LogisticRegression
 1. 
 
 ```python
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 ```
 
 2.  예제
 
 ```python
+
+# 2. 데이터 분할
+train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.3, random_state=1)
+
+
+# 3. 모델 준비
+forest = RandomForestClassifier()
+
+# 4. 학습
+forest.fit(train_X, train_y)
 
 ```
 
@@ -261,12 +319,21 @@ from sklearn.linear_model import LogisticRegression
 1. 
 
 ```python
-from sklearn.linear_model import LogisticRegression
+from sklearn.cluster import KMeans
 ```
 
 2.  예제
 
 ```python
+# 2. 데이터 분할
+train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.3, random_state=1)
+
+
+# 3. 모델 준비
+mean = KMeans(n_clusters=3)  # 3개 품목
+
+# 4. 학습
+mean.fit(train_X, train_y)
 
 ```
 
