@@ -1,0 +1,146 @@
+sql >
+
+SELECT * FROM EMP;
+SELECT ENNME, JOB
+FROM EMP;
+
+===============
+
+사원 테이블(EMP)의 모든 데이터를 출력하자
+SELECT * FROM EMP;
+
+사원 테이블에서 / 사원의 이름(ENAME), 사원번호(EMPNO), 월급(SAL)을 출력하자
+SELECT ENAME, EMPNO, SAL
+FROM EMP;
+
+사원 테이블에서 / 사원의 이름과 연봉을 출력하자
+SELECT ENAME, SAL*12
+FROM EMP;
+
+사원 테이블에서 사원의 이름, 입사일(HIREDATE), 부서번호(DEPTNO)를 출력하자
+SELECT ENAME, HIREDATE, DEPTNO
+FROM EMP;
+
+
+사원 테이블에서 사원의 이름과, 해당 사원의 관리자(MGR)를 출력하자
+SELECT ENAME, MGR
+FROM EMP;
+부서 테이블(DEPT)의 구조를 보자
+DESC DEPT;
+
+사원 테이블에서 사원의 이름, 월급, 커미션(COMM)을 출력하자
+SELECT ENAME, SAL, COMM
+FROM EMP;
+
+
+사원 테이블의 모든 데이터를 “ㅇㅇ님이 ㅇㅇ에 입사를 하고 ㅇㅇ의 월급을 받습니다” 형
+식으로 출력하자
+(하나의 컬럼)
+
+SELECT ENAME || '님이 ' || HIREDATE || '에 입사를 하고 ' || SAL ||  '의 월급을 받습니다.' AS 문제
+FROM EMP;
+
+
+사원 테이블에서 사원번호가 ‘7844’인 사원의 사원번호, 이름, 월급을 출력하자
+SELECT
+FROM EMP
+WHERE EMPNO = 7844;
+사원 테이블에서 ‘SMITH’의 사원번호, 이름, 월급을 출력하자
+
+
+사원 테이블에서 입사일이 1980년 12월 17일인 사원의 모든 데이터를 출력하자
+SELECT * FROM EMP WHERE HIREDATE = '1980/12/17';
+SELECT * FROM EMP WHERE HIREDATE = '80/12/17';
+SELECT * FROM EMP WHERE HIREDATE = '1980-12-17';
+SELECT * FROM EMP WHERE HIREDATE = '80-12-17';
+
+
+
+사원 테이블에서 1980년부터 1982년 사이에 입사한 사원의 이름과 입사일을 출력하자
+SELECT ENAME, HIREDATE
+FROM EMP
+WHERE HIREDATE >= '80/01/01' AND HIREDATE <= '82/12/31';
+
+SELECT ENAME, HIREDATE
+FROM EMP
+WHERE HIREDATE BETWEEN '80/01/01' AND '82/12/31';
+
+월급이 2000 이하인 사원의 이름과 월급을 출력하자
+
+SELECCT ENMAE, SAL
+FROM EMP
+WHERE SAL <= 2000;
+
+사원번호가 7369, 7499, 7521인 사원들의 이름과 월급을 출력하자
+
+SELECT ENAME, SAL FROM EMP WHERE
+EMPNO = 7369 OR EMPNO = 7499 OR EMPNO = 7521;
+
+SELECT ENAME, SAL
+FROM EMP
+WHERE EMPNO IN (7369, 7499, 7521);
+
+
+
+
+사원 테이블에 사원번호:1111, 이름:HONG, 직업:ENGINEER, 관리자:없음, 입사일:오늘 날짜,
+월급:3000, 커미션:없음, 부서번호:30을 추가하자
+
+INSERT INTO EMP VALUES(1111,’HONG’,’ENGINEER’,NULL,SYSDATE,3000,NULL,30);
+
+
+사원 테이블에
+사원번호 : 1112
+이름 : KIM
+월급 : 2500
+부서 : 30
+입력하자
+
+INSERT INTO EMP (EMPNO, ENAME, SAL, DEPTNO)
+VALUES(1112, 'KIM', 2500, 30);
+
+
+사원테이블에서 HONG의 월급을 3500으로 수정
+UPDATE EMP SET SAL = 3500 WHERE ENAME = ‘HONG’;
+
+
+사원테이블에서 이름이 HONG인 사원 삭제
+DELETE FROM EMP WHERE ENAME = ‘HONG’;
+
+사원테이블에서 번호가 1112번 
+DELETE FROM EMP WHERE EMPNO=1112;
+
+
+size가 10인 문자형 컬럼 ID와 PW를 가진 TEST 테이블을 생성하자
+CREATE TABLE TEST(
+ ID VARCHAR2(10), 
+ PW VARCHAR2(10)
+);
+
+사원 테이블(EMP)의 모든 구조와 데이터를 TEST01로 복사하자
+CREATE TABLE TEST01 AS SELECT * FROM EMP;
+
+사원 테이블에서 사원의 번호와 이름을 TEST02로 복사하자
+CREATE TABLE TEST02 AS SELECT EMPNO, ENAME FROM EMP;
+
+사원 테이블에서 사원의 번호와 이름을 TEST03으로 복사하자 (컬럼명을 M1, M2로 변경하자)
+CREATE TABLE TEST03 AS SELECT EMPNO AS M1, ENAME AS M2 FROM EMP;
+
+CREATE TABLE TEST033(M1, M2) AS SELECT EMPNO, ENANE FROM EMP;
+
+사원 테이블의 구조만 TEST04로 복사하자
+CREATE TABLE TEST04 AS SELECT * FROM EMP WHERE 1 = 2;
+
+DESC TEST04 로 확인
+
+
+
+https://dbeaver.io/download/
+
+oracle - edit driver settings - 
+
+database : XE
+
+edit driver settings -> Libraries 기존 4개 삭제 -> ADD file ->
+C:\app\SDG\product\18.0.0\dbhomeXE\jdbc\lib/ ojdbc8.jar
+Find Class -> oracle.jdbc.Oracledriver

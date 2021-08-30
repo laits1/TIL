@@ -250,7 +250,7 @@ Cloud Shell을 사용하여 gcloud를 구성하고 컨테이너 이미지를 실
 
   ```sh
   kubectl create deployment hello-server \
-      --image=asia-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0
+      --image=us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0
   ```
 
   - 이 Kubernetes 명령어 ``kubectl create deployment``는 ``hello-server``라는 배포를 만듭니다. 배포의 Pod는 ``hello-app`` 컨테이너 이미지를 실행 한다.
@@ -282,7 +282,7 @@ Cloud Shell을 사용하여 gcloud를 구성하고 컨테이너 이미지를 실
 1. ``kubectl get pods``를 사용하여 실행 중인 Pod를 검사
 
    ```shell
-   kubect1 get pods
+   kubectl get pods
    ```
 
    클러스터에서 하나의 ``hello-server`` pod가 실행 중임을 볼 수 있다.
@@ -290,7 +290,7 @@ Cloud Shell을 사용하여 gcloud를 구성하고 컨테이너 이미지를 실
 2. ``kubectl get service``를 사용하여 ``hello-server`` 서비스를 검사
 
    ```shell
-   kubectl get service hello-server
+   
    ```
 
    이 명령어의 출력에서 ``EXTERNAL-IP`` 열에 있는 서비스의 외부 IP 주소를 복사한다.
@@ -298,7 +298,7 @@ Cloud Shell을 사용하여 gcloud를 구성하고 컨테이너 이미지를 실
 3. 외부 IP주소와 노출된 포트를 사용하여 웹 브라우저에서 애플리케이션을 확인
 
    ```http
-   http://EXTERNAL_IP
+   http://EXTERNAL_IP:PORT
    ```
 
    GKE에 컨테이너식 웹 애플리케이션을 배포했습니다.
@@ -307,3 +307,18 @@ Cloud Shell을 사용하여 gcloud를 구성하고 컨테이너 이미지를 실
 
 #### 4. 삭제
 
+1. ``kubectl delete``를 실행하여 애플리케이션의 서비스를 삭제한다.
+
+   ```shell
+   kubectl delete service hello-server
+   ```
+
+   이 명령어는 배포를 노출할 때 만든 Compute Engine 부하 분산기를 삭제합니다.
+
+2. ``gcloud container clusters delete``를 실행하여 클러스터를 삭제
+
+   ```shell
+   gcloud container clusters delete hello-cluster
+   ```
+
+   
