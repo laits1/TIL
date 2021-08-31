@@ -1,0 +1,206 @@
+SET LINESIZE 170
+SET PAGESIZE 40
+
+사원 테이블에서 사원 이름의 첫글자는 대문자로, 나머지는 소문자로 변환하여 출력하자
+SELECT UPPER(SUBSTR(ENAME,1,1)) || LOWER(SUBSTR(ENAME,2)) FROM EMP;
+SELECT INITCAP(ENAME) FROM EMP;
+
+
+사원 테이블에서 사원 이름, 사원 이름의 두번째 글자부터 네번째 글자까지를 출력하자
+SELECT ENAME, SUBSTR(ENAME, 2, 3) FROM EMP;
+
+
+사원테이블에서 각 사원 이름의 철자 개수를 출력하자
+SELECT LENGTH(ENAME) FROM EMP;
+
+사원테이블에서 각 사원 이름의 앞 글자 하나와 마지막 글자 하나만 출력하자 (둘 다 소문자로 출력하자)
+SELECT LOWER(SUBSTR(ENAME,1,1)), LOWER(SUBSTR(ENAME, -1)) FROM EMP;
+
+
+3456.78 을 소수점 첫번째 자리에서 반올림해서 출력하자 (정수 부분만 출력하자)
+SELECT ROUND(3456.78) FROM DUAL;
+
+
+
+
+사원 테이블에서 평균 월급을 출력하자
+SELECT AVG(SAL) FROM EMP;
+
+
+사원 테이블에서 부서번호가 10인 부서에 근무하고 있는 사원들의 부서번호와 평균 월급을 출력하자
+SELECT DEPTNO, AVG(SAL) FROM EMP
+WHERE DEPTNO = 10
+GROUP BY DEPTNO;
+
+
+사원 테이블에서 직업이 ‘SALESMAN’인 사원들의 평균 월급을 출력하자
+SELECT AVG(SAL) FROM EMP
+WHERE JOB='SALESMAN';
+
+SELECT JOB, AVG(SAL)
+FROM EMP
+HAVING JOB = 'SALESMAN'
+GROUP BY JOB;
+
+사원 테이블에서 부서별 평균 월급을 출력하자
+SELECT DEPTNO, AVG(SAL)
+FROM EMP
+GROUP BY DEPTNO;
+-- 평균 월급이 2000보다 더 큰 부서만
+SELECT DEPTNO, AVG(SAL)
+FROM EMP
+HAVING AVG(SAL) > 2000
+GROUP BY DEPTNO;
+
+
+사원 테이블에서 직업별 평균 월급을 출력하자
+SELECT JOB, AVG(SAL)
+FROM EMP
+GROUP BY JOB;
+
+사원 테이블에서 평균 커미션을 출력하자
+SELECT AVG(COMM) FROM EMP;
+
+SELECT AVG(NVL(COMM, 0)) FROM EMP;
+
+사원 테이블에서 10번 부서의 최대 월급을 출력하자
+SELECT DEPTNO,MAX(SAL)
+FROM EMP
+WHERE DEPTNO = 10
+GROUP BY DEPTNO;
+
+사원 테이블에서 부서별 최대 월급을 출력하자
+SELECT DEPTNO, MAX(SAL)
+FROM EMP
+GROUP BY DEPTNO;
+
+
+사원 테이블에서 직업별 최대 월급을 출력하자
+SELECT JOB, MAX(SAL)
+FROM EMP
+GROUP BY JOB;
+
+사원 테이블에서 직업이 ‘SALESMAN’인 사원들 중 최대월급을 출력하자
+SELECT JOB, MAX(SAL)
+FROM EMP
+WHERE JOB = 'SALESMAN'
+GROUP BY JOB;
+
+
+사원 테이블에서 사원 이름과 월급을 출력하자 (월급을 내림차순으로 출력하자)
+SELECT ENAME, SAL
+FROM EMP
+ORDER BY SAL DESC;
+
+
+사원 테이블에서 직업별 평균 월급을 출력하자 (컬럼 ALIAS를 ‘평균’ 으로 하고, 평균 월급이 높은 순으로 정렬하자)
+SELECT JOB, AVG(SAL) AS 평균
+FROM EMP
+GROUP BY JOB
+ORDER BY AVG(SAL) DESC;
+
+
+사원 테이블에서 직업별 총 월급을 출력하자 (총 월급이 5000 이상인 데이터만 출력하자, 총 월급 내림차순)
+SELECT JOB, SUM(SAL)
+FROM EMP
+GROUP BY JOB
+HAVING SUM(SAL) >= 5000
+ORDER BY SUM(SAL) DESC;
+
+
+사원 테이블에서 부서별 월급의 합을 출력하자 (총 합이 1000 이상인 데이터만 출력하자, 총 합 오름차순)
+
+SELECT DEPTNO, SUM(SAL)
+FROM EMP
+GROUP BY DEPTNO
+HAVING SUM(SAL) >= 1000
+ORDER BY SUM(SAL);
+
+
+월급을 7번째로 많이 받는 사원의 이름과 사원번호를 출력
+SELECT *
+FROM
+	(
+	SELECT ENAME, EMPNO, SAL, ROWNUM AS RN
+	FROM
+	(SELECT ENAME, EMPNO, SAL
+	FROM EMP
+	ORDER BY SAL DESC) A) B	
+WHERE RN = 7;
+
+
+부서번호가 10번인 사원들과 같은 월급을 받는 사원의 이름과 월급을 출력하자
+
+SELECT ENAME, SAL
+FROM EMP
+WHERE SAL IN (SELECT SAL FROM EMP WHERE DEPTNO = 10);
+
+직업이 ‘CLERK’인 사원들과 같은 부서에서 근무하는 사원의 이름과 월급, 부서번호를 출력하자
+SELECT ENAME, SAL, DEPTNO
+FROM EMP
+WHERE DEPTNO IN (SELECT DEPTNO FROM EMP WHERE JOB = 'CLERCK');
+
+‘CHICAGO’에서 근무하는 사원들과 같은 부서에서 근무하는 사원의 이름과 월급을 출력하자
+SELECT ENAME, SAL
+FROM EMP
+WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT WHERE LOC = 'CHICAGO');
+
+부하직원이 있는 사원의 사원번호와 이름을 출력하자 (자기 자신이 다른 사원의 관리자)
+SELECT EMPNO, ENAME 
+FROM EMP
+WHERE EMPNO IN (SELECT NVL(MGR, 0) FROM EMP);
+
+
+부하직원이 없는 사원의 사원번호와 이름을 출력하자
+SELECT EMPNO, ENAME
+FROM EMP
+WHERE EMPNO NOT IN (SELECT NVL(MGR, 0) FROM EMP);
+
+
+이름이 ‘KING’인 사원에게 보고하는 사원의 이름과 월급을 출력하자 (관리자가 ‘KING’인 사원)
+SELECT ENAME, SAL
+FROM EMP
+WHERE MGR = (SELECT EMPNO FROM EMP WHERE ENAME = 'KING');
+
+
+20번 부서의 사원 중 가장 많은 월급을 받는 사원보다 더 많은 월급을 받는 사원들의 이름과 월급을 출력하자
+SELECT ENAME, SAL
+FROM EMP
+WHERE SAL > (SELECT MAX(SAL) FROM EMP WHERE DEPTNO  = 20);
+
+
+직업이 ‘SALESMAN’인 사원들 중 가장 큰 월급을 받는 사원보다 더 많은 월급을 받는 사원들의 이름과 월급을 출력하자
+(MAX 함수를 사용하지 않고 출력하자)
+SELECT ENAME, SAL
+FROM EMP
+WHERE SAL > ALL(SELECT SAL FROM EMP WHERE JOB = 'SALESMAN');
+
+
+
+자기 부서의 평균 월급보다 더 많은 월급을 받는 사원들의
+이름, 월급, 부서번호, 부서별 평균 월급을 출력하자
+SELECT * FROM EMP;
+SELECT DEPTNO, AVG(SAL) FROM EMP GROUP BY DEPTNO;
+
+SELECT E.ENAME, E.SAL, E.DEPTNO, MYDEPT.MYAVG
+FROM EMP E,
+	(SELECT DEPTNO, AVG(SAL) AS MYAVG FROM EMP GROUP BY DEPTNO) MYDEPT
+WHERE E.DEPTNO = MYDEPT.DEPTNO
+AND E.SAL > MYDEPT.MYAVG;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
