@@ -10,7 +10,7 @@ iris = load_iris()
 # print(iris)
 # print(iris.data)
 # print(iris.target)
-# print(iris.target_names)
+# print(iris.target_names) dd
 
 X = iris.data
 y = iris.target
