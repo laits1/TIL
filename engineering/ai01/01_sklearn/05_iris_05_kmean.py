@@ -14,7 +14,7 @@ train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.3, random_
 
 
 # 3. 모델 준비
-mean = KMeans(n_clusters=3)  # 3개 품목
+mean = KMeans(n_clusters=3)  # 3개 품목 
 
 # 4. 학습
 mean.fit(train_X, train_y)
