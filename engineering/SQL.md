@@ -274,6 +274,12 @@ GROUP BY DNAME, LOC;
 
 ----
 
+HR_ERD
+
+![](HR_ERD.JPG)
+
+
+
 ##### 사원의 FULL_NAME(FIRST_NAME + LAST_NAME) 과 이메일을 출력하자 (이메일@HR.COM 으로 출력하자) 
 
 ```SQL
