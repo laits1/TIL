@@ -459,6 +459,7 @@ f2015.groupBy("DEST_COUNTRY_NAME").count().show()
 # spark.sql
 spark.sql("SELECT DEST_COUNTRY_NAME, COUNT(1) FROM flights2015 GROUP BY DEST_COUNTRY_NAME").show()
 
+spark.sql("SELECT DEST_COUNTRY_NAME, SUM(COUNT) FROM flights2015 GROUP BY DEST_COUNTRY_NAME").show()
 
 spark.sql("SELECT MAX(count) FROM flights2015").show()
 
@@ -551,6 +552,25 @@ spark.sql("SELECT * FROM flights2015 LIMIT 5").show()
 6문제 만들기
 
 ```sql
+# f2015 에서 DEST_COUNTRY_NAME을 그룹화 하고 DEST_COUNT_NAME과 각 COUNT를 더한 컬럼을 출력
+
+spark.sql("SELECT DEST_COUNTRY_NAME, SUM(COUNT) FROM flights2015 GROUP BY DEST_COUNTRY_NAME").show()
+
+
+# f2015에서 DEST_COUNTRY_NAME을 그룹화 하고 DEST_COUNTRY_NAME이 United로 시작하는 컬럼 출력
+spark.sql("SELECT DEST_COUNTRY_NAME FROM flights2015 WHERE DEST_COUNTRY_NAME LIKE 'United%' GROUP BY DEST_COUNTRY_NAME").show()
+
+# f2015에서 DEST_COUNTRY_NAME과 ORIGIN_COUNTRY_NAME이 같은 모든 컬럼을 출력
+spark.sql("SELECT * FROM flights2015 WHERE DEST_COUNTRY_NAME = ORIGIN_COUNTRY_NAME").show()
+
+# F2015에서 count가 200보다 크고 300보다 작으면서 DEST_COUNTRY_NJAME 을 내림차순
+spark.sql("SELECT * FROM flights2015 WHERE COUNT > 200 AND COUNT < 300 ORDER BY DEST_COUNTRY_NAME DESC").show()
+
+# F2015에서 count가 1000보다 작으면서 COUNT를 내림차순
+spark.sql("SELECT * FROM flights2015 WHERE COUNT > 1000 ORDER BY COUNT DESC").show()
+
+# count가 1이면서 DEST_COUNTRY_NAME이 United States가 아닌 모든 컬럼 출력
+spark.sql("SELECT * FROM flights2015 WHERE COUNT = 1 AND DEST_COUNTRY_NAME != 'United States' ORDER BY DEST_COUNTRY_NAME DESC").show()
 ```
 
 
