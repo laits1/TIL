@@ -1,0 +1,138 @@
+rdd01 = sc.range(0, 1000, 1, 2)
+# 객체
+rdd01
+# 파티션 갯수 확인
+rdd01.getNumPartitions()
+# 출력
+rdd01.collect()
+rdd01.take(5)
+
+# 홀수만
+rdd02 = rdd01.filter(lambda x: x%2)
+# 짝수만
+rdd03 = rdd01.filter(lambda x: not x%2)
+
+countries = ["korea", "united states america", "united kingdom", "japan", "germany", "france", "canada", "italy", "korea"]
+
+g8 = sc.parallelize(countries, 2)
+g8.count()
+g8.collect()
+
+# transformation
+g8 = g8.distinct()
+g8.count()
+g8.collect()
+
+g8_upper = g8.map(lambda x: x.upper())
+g8_upper.collect()
+
+# map : 각각의 요소에
+g8_list01 = g8.map(lambda x: list(x))
+g8_list01.collect()
+
+# flatMap : 전체 요소에 
+g8_list02 = g8.flatMap(lambda x: list(x))
+g8_list02.collect()
+
+counting = sc.range(1, 9, 1, 2)
+counting_g8 = counting.zip(g8)
+counting_g8.collect()
+
+score = [("kang", 10), ("you", 30), ("kang", 20), ("shin", 60), ("you", 100)]
+
+score_rdd = sc.parallelize(score, 2)
+score_rdd_sum = score_rdd.reduceByKey(lambda x, y: x + y)
+score_rdd_sum.collect()
+
+
+
+nums = sc.parallelize([1, 3, 2, 1, 5, 4, 6, 7], 2)
+nums.sortBy(lambda x: x).collect()
+
+arr = g8.glom()
+arr.collect()
+
+
+# action
+g8.first()
+
+nums.max()
+nums.min()
+
+nums.mean()
+nums.variance()
+nums.stdev()
+
+# stats : count mean stdev max min
+nums.stats()
+
+g8.take(3)
+g8.takeOrdered(3)
+g8.top(3)
+
+nums.count()
+nums.countByValue()
+# countApprox(제한시간ms, 신뢰도)
+nums.countApprox(400, 0.9)
+
+rdd02.sum()
+
+rdd02.reduce(lambda x, y: x + y)
+
+# fold(기본값, 연산)
+rdd02.fold(0, lambda x, y: x + y)
+
+rdd02.glom().collect()
+
+rdd02.aggregate(0, max, lambda x, y: x + y)
+
+# g8에서 가장 긴 단어 찾자
+
+def g8Max(x, y):
+    if len(x) > len(y):
+        return x
+    else:
+        return y
+
+g8.reduce(g8Max)
+
+# 가장 짧은 단어
+g8.reduce(lambda x, y: y if len(x) > len(y) else x)
+
+
+
+g8.saveAsTextFile("/tmp/g8")
+# yarn : hdfs dfs -ls /tmp/g8
+# standalone : ls /tmp/g8
+
+result = sc.textFile("/tmp/g8/part-*")
+
+# key:value
+key = g8.keyBy(lambda x:x[0])
+key.collect()
+
+key.mapValues(lambda x: list(x)).collect()
+key.flatMapValues(lambda x: list(x)).collect()
+
+key.groupByKey().mapValues(lambda x: list(x)).collect()
+key.groupByKey().mapValues(lambda x: len(x)).collect()
+
+# reduceByKey 사용해서
+# [('g', 'germany'), ... ,('u', 'united states america, united kingdom')]
+key.reduceByKey(lambda x, y: x + ", " + y).collect()
+
+key.countByKey()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
