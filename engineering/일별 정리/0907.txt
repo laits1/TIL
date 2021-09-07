@@ -1,0 +1,194 @@
+bin : 
+conf :
+jars : 
+python : 
+R :
+sbin :
+
+##### master yarn #####
+hdfs namenode -format
+hdfs datanode - format
+
+start-dfs.sh
+start-yarn.sh
+# start-all.sh
+# stop-all.sh
+
+jps
+
+hdfs dfsadmin -report
+####################
+
+pyspark
+
+# AWS
+scp -i 경로/키 경로/data.zip 계정@ip:/home/계정/
+
+mkdir data
+unzip data.zip -d ./data
+cd data
+
+cd 
+
+vim wordcount.py
+
+# standalone
+mkdir result
+spark-submit wordcount.py ./data/shakespeare.txt result
+
+# hadoop
+cd data
+hdfs dfs -put shakespeare.txt shakespeare.txt
+
+cd
+spark-submit wordcount.py shakespeare.txt result
+
+rm wordcount.py
+hdfs dfs -rm -r result
+
+vim wordcount.py
+
+# single
+cat result/part-*
+
+# hadoop
+hdfs dfs -cat result/part-*
+
+# rdd
+# dataframe
+
+myRange = spark.range(1000).toDF("number")
+myRange.head()
+myRange.head(10)
+myRange.tail(10)
+
+
+
+divisBy2 = myRange.where("number % 2 = 0")
+divisBy2.head(10)
+divisBy2.count()
+
+# hadoop
+hdfs dfs -put data data
+
+flights2010 = spark.read.csv("data/flights/csv/2010-summary.csv")
+flights2010.printSchema()
+flights2010.take(5)
+
+flights2010 = spark.read.option("header", "true").csv("data/flights/csv/2010-summary.csv")
+flights2010.printSchema()
+flights2010.take(5)
+
+# 실행 계획
+flights2010.sort("count").explain()
+
+# shuffle partition 변경
+spark.conf.set("spark.sql.shuffle.partitions", "5")
+flights2010.sort("count").take(2)
+
+f2015 = spark.read.format("json").load("data/flights/json/2015-summary.json")
+f2015.show()
+f2015.show(5)
+f2015.show(f2015.count())
+
+# table 만들기
+f2015.createOrReplaceTempView("flights2015")
+
+# dataframe
+f2015.groupBy("DEST_COUNTRY_NAME").count().show()
+# spark.sql
+spark.sql("SELECT DEST_COUNTRY_NAME, COUNT(1) FROM flights2015 
+	GROUP BY DEST_COUNTRY_NAME").show()
+
+spark.sql("SELECT MAX(count) FROM flights2015").show()
+
+from pyspark.sql.functions import max
+f2015.select(max("count")).show()
+
+f2015.select("DEST_COUNTRY_NAME").show(5)
+spark.sql("SELECT DEST_COUNTRY_NAME FROM flights2015 LIMIT 5").show()
+
+spark.sql("SELECT DEST_COUNTRY_NAME, ORIGIN_COUNTRY_NAME FROM flights2015 LIMIT 5").show()
+f2015.select("DEST_COUNTRY_NAME", "ORIGIN_COUNTRY_NAME").show(5)
+
+from pyspark.sql.functions import col
+f2015.select(col("DEST_COUNTRY_NAME")).show(5)
+
+from pyspark.sql.functions import expr
+f2015.select(expr("DEST_COUNTRY_NAME AS destination")).show(5)
+f2015.select(col("DEST_COUNTRY_NAME").alias("destination")).show(5)
+f2015.select(expr("DEST_COUNTRY_NAME").alias("destination")).show(5)
+spark.sql("SELECT DEST_COUNTRY_NAME as destination FROM flights2015").show(5)
+
+# selectExpr = select + expr
+f2015.selectExpr("DEST_COUNTRY_NAME as destination").show(5)
+
+f2015.selectExpr("*", "(DEST_COUNTRY_NAME = ORIGIN_COUNTRY_NAME) as DOMESTIC_FLIGHT").show(100)
+spark.sql("SELECT *, (DEST_COUNTRY_NAME = ORIGIN_COUNTRY_NAME) as DOMESTIC_FLIGHT 
+	FROM flights2015").show()
+
+f2015.selectExpr("avg(count)", "count(distinct(DEST_COUNTRY_NAME))").show()
+spark.sql("SELECT AVG(count), COUNT(DISTINCT(DEST_COUNTRY_NAME)) FROM flights2015").show()
+
+# lit = literal (값)
+from pyspark.sql.functions import lit
+f2015.select(expr("*"), lit(1).alias("one")).show(1)
+spark.sql("SELECT *, 1 as one FROM flights2015").show(1)
+
+# withColumn("컬럼명", "표현식")
+f2015.withColumn("DOMESTIC_FLIGHT", expr("DEST_COUNTRY_NAME = ORIGIN_COUNTRY_NAME")).show()
+spark.sql("SELECT *, (DEST_COUNTRY_NAME = ORIGIN_COUNTRY_NAME) AS DOMESTIC_FLIGHT FROM flights2015").show()
+
+# withColumnRenamed
+f2015.withColumnRenamed("DEST_COUNTRY_NAME", "DESTINATION").show()
+f2015.columns
+
+f2015.filter(col("count") < 2).show(5)
+f2015.where("count < 2").show(5)
+spark.sql("SELECT * FROM flights2015 WHERE count < 2").show(5)
+
+spark.sql("SELECT * FROM flights2015 WHERE count < 2 AND ORIGIN_COUNTRY_NAME != 'Croatia'").show(5)
+# 여러개 조건 연결 -> 동시에 모든 조건 실행 => 특정 상황에서 원하지 않는 결과가 도출 될 수 있다!!!
+f2015.where("count < 2").where(col("ORIGIN_COUNTRY_NAME") != "Croatia"). show(5)
+
+spark.sql("""SELECT COUNT(DISTINCT(ORIGIN_COUNTRY_NAME, DEST_COUNTRY_NAME)) AS count 
+	  FROM flights2015""").show(5)
+f2015.select("ORIGIN_COUNTRY_NAME", "DEST_COUNTRY_NAME").distinct().count()
+
+from pyspark.sql import Row
+schema = f2015.schema
+new_rows = [
+	Row("Korea", "Korea", 5),
+	Row("Korea", "Australia", 1)
+]
+paralle_rows = sc.parallelize(new_rows)
+new_df = spark.createDataFrame(paralle_rows, schema)
+
+f2015.union(new_df).show(10000)
+
+f2015.orderBy(col("count").asc()).show(f2015.count())
+f2015.sort("count").show(f2015.count())
+spark.sql("SELECT * FROM flights2015 ORDER BY count ASC").show(f2015.count())
+
+spark.sql("SELECT * FROM flights2015 ORDER BY count DESC").show(f2015.count())
+f2015.orderBy(col("count").desc()).show(f2015.count())
+
+# DEST_COUNTRY_NAME 을 기준으로 오름차순으로 정렬하고, count를 기준으로 오름차순으로 정렬해서 출력
+f2015.orderBy(col("DEST_COUNTRY_NAME"), col("count")).show(f2015.count())
+f2015.sort("DEST_COUNTRY_NAME", "count").show(f2015.count())
+spark.sql("SELECT * FROM flights2015 ORDER BY DEST_COUNTRY_NAME, count").show(f2015.count())
+
+# DEST_COUNTRY_NAME 을 내림차순, count 는 오름차순으로 정렬해서 출력
+spark.sql("SELECT * FROM flights2015 ORDER BY DEST_COUNTRY_NAME DESC, count").show(f2015.count())
+# Column.desc()
+f2015.orderBy(col("DEST_COUNTRY_NAME").desc(), expr("count asc")).show(5)
+f2015.sort(f2015.DEST_COUNTRY_NAME.desc(), col("count").asc()).show(5)
+# desc(col)
+f2015.sort(desc("DEST_COUNTRY_NAME"), col("count").asc()).show(5)
+
+# limit
+f2015.limit(5).show()
+spark.sql("SELECT * FROM flights2015 LIMIT 5").show()
+
+f2015.show(5)
+
