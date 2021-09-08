@@ -1,0 +1,216 @@
+hdfs namenode -format
+hdfs datanode -format
+start-dfs.sh
+start-yarn.sh
+
+hdfs dfs -mkdir -p /user/engineer
+hdfs dfs -put data /user/engineer/
+
+pyspark
+
+retails = spark.read.format("csv").option("header", "true")\
+.option("inferSchema", "true").load("data/retails/2010-12-01.csv")
+
+retails.printSchema()
+retails.createOrReplaceTempView("retails")
+
+from pyspark.sql.functions import lit
+retails.select(lit(5), lit("five"), lit(5.0))
+
+from pyspark.sql.functions import col
+retails.where(col("InvoiceNo") != 536365).select("InvoiceNo", "Description").show(5)
+retails.select("InvoiceNo", "Description").where(col("InvoiceNo") != 536365).show(5, False)
+
+retails.where("InvoiceNo != 536365").show(5)
+retails.where("InvoiceNo <> 536365").show(5)
+
+from pyspark.sql.functions import instr
+price_filter = col("UnitPrice") > 600
+descript_filter = instr(retails.Description, "POSTAGE") >= 1
+dot_code_filter = col("StockCode") == "DOT"
+
+retails.withColumn("isExpensive", dot_code_filter & (price_filter | descript_filter)).where("isExpensive")\
+.select("UnitPrice", "isExpensive").show(5)
+
+spark.sql("""
+SELECT UnitPrice, 
+(StockCode = 'DOT' AND (UnitPrice > 600 OR instr(Description, 'POSTAGE') >= 1)) AS isExpensive
+FROM retails 
+WHERE (StockCode = 'DOT' AND (UnitPrice > 600 OR instr(Description, 'POSTAGE') >= 1)) 
+""").show(5)
+
+from pyspark.sql.functions import pow
+from pyspark.sql.functions import expr
+# (현재 갯수 * 가격)^2 + 5
+real_quantity = pow(col("Quantity") * col("UnitPrice"), 2) + 5
+retails.select(col("CustomerId"), expr("(POWER((Quantity * UnitPrice), 2) + 5) AS RealQuantity")).show(5)
+retails.select(col("CustomerId"), real_quantity.alias("RealQuantity")).show(5)
+
+from pyspark.sql.functions import round, bround
+retails.select(round(lit("2.5")), bround(lit("2.5"))).show(1)
+spark.sql("SELECT ROUND(2.5), BROUND(2.5)").show(1)
+
+retails.describe().show()
+from pyspark.sql.functions import count, mean, stddev_pop, min, max
+retails.select(count("UnitPrice"), mean("UnitPrice"), stddev_pop("UnitPrice"), \
+min("UnitPrice"), max("UnitPrice")).show()
+
+from pyspark.sql.functions import monotonically_increasing_id
+retails.select("*", monotonically_increasing_id()).show(5)
+
+# DESCRIPTION의 첫글자만 대문자, 나머지는 소문자로 출력하자.
+from pyspark.sql.functions import initcap
+retails.select(initcap(col("DESCRIPTION"))).show(5, False)
+
+# DESCRIPTION 전체를 소문자로, DESCRIPTION 전체를 대문자로 한 번에 출력하자.
+from pyspark.sql.functions import lower, upper
+retails.select(lower(col("DESCRIPTION")), upper(col("DESCRIPTION"))).show(5)
+
+# spark.sql을 dataframe 형식으로 바꾸자.
+spark.sql("""
+SELECT LTRIM('    HELLO    '), RTRIM('    HELLO    '), TRIM('    HELLO    '),
+LPAD('HELLO', 10, '*'), RPAD('HELLO', 10, '*')
+""").show()
+
+from pyspark.sql.functions import ltrim, rtrim, trim, lpad, rpad
+retails.select(ltrim(lit("    HELLO    ")), rtrim(lit("    HELLO    ")), trim(lit("    HELLO    ")), \
+lpad(lit("HELLO"), 10, "*"), rpad(lit("HELLO"), 10, "*")).show(1)
+from pyspark.sql.functions import regexp_replace
+regex_str = "BLACK|WHITE|RED|GREEN|BLUE"
+retails.select(regexp_replace(col("DESCRIPTION"), regex_str, "COLOR").alias("color"), \
+col("DESCRIPTION")).show(5, False)
+
+spark.sql("""
+SELECT REGEXP_REPLACE(DESCRIPTION, 'BLACK|WHITE|RED|GREEN|BLUE', 'COLOR') as color, DESCRIPTION
+FROM retails
+""").show(5, False)
+
+from pyspark.sql.functions import translate
+retails.select(translate(col("DESCRIPTION"), "ABCD", "1234"), col("DESCRIPTION")).show(5, False)
+
+from pyspark.sql.functions import regexp_extract
+extract_str = "(BLACK|WHITE|RED|GREEN|BLUE)"
+retails.select(regexp_extract(col("DESCRIPTION"), extract_str, 1).alias("extract"), col("DESCRIPTION")).show(5, False)
+
+contains_black = instr(col("DESCRIPTION"), "BLACK") >= 1
+contains_white = instr(col("DESCRIPTION"), "WHITE") >= 1
+retails.withColumn("hasBlackWhite", contains_black | contains_white)\
+.select("DESCRIPTION", "hasBlackWhite").show(5, False)
+# DESCRIPTION 컬럼에서, BLACK이나 WHITE 라는 단어를 포함한 row만 출력하자. 
+retails.withColumn("hasBlackWhite", contains_black | contains_white)\
+.where("hasBlackWhite").select(col("DESCRIPTION"), col("hasBlackWhite")).show(5, False)
+
+# date : 달력 (연:월:일)
+# timestamp : 달력 + 시간 (연:월:일 시:분:초)
+from pyspark.sql.functions import current_date, current_timestamp
+date_df = spark.range(10).withColumn("today_date", current_date())\
+.withColumn("now_timestamp", current_timestamp())
+date_df.createOrReplaceTempView("dateTable")
+date_df.printSchema()
+date_df.show(1, False)
+
+from pyspark.sql.functions import date_add, date_sub
+date_df.select(date_sub(col("today_date"), 5), date_add(col("today_date"), 5)).show(1)
+
+spark.sql("""
+SELECT date_sub(today_date, 5), date_add(today_date, 5)
+FROM dateTable
+""").show(1)
+
+from pyspark.sql.functions import datediff, months_between, to_date
+
+date_df.withColumn("week_ago", date_sub(col("today_date"), 7))\
+.select(datediff(col("week_ago"), col("today_date"))).show(1)
+
+date_df.select(to_date(lit("2021-6-21")).alias("start"), to_date(lit("2021-11-12")).alias("end"))\
+.select(months_between(col("start"), col("end"))).show(1)
+
+spark.sql("""
+SELECT DATEDIFF(DATE_SUB(today_date, 7), today_date) as datediff,
+months_between('2021-06-21', '2021-11-12') as monthsbetw
+FROM dateTable
+""").show(1)
+
+date_df.select(to_date(lit("2021-12-32"))).show(1)
+
+# simpleDateFormat (Java)
+dateFormat = "yyyy-MM-dd"
+clean_date = spark.range(1).select(to_date(lit("2021-11-12"), dateFormat).alias("date"), \
+to_date(lit("2021-12-32"), dateFormat).alias("date2"))
+clean_date.show()
+clean_date.createOrReplaceTempView("dateTable2")
+
+spark.sql("""
+SELECT TO_DATE(date, 'yyyy-MM-dd'), TO_DATE(date, 'yyyy-dd-MM') FROM dateTable2
+""").show()
+
+from pyspark.sql.functions import to_timestamp
+clean_date.select(to_timestamp(col("date"), dateFormat)).show()
+
+clean_date.select(to_date(col("date"), "yyyy-MM-dd HH:mm:ss"), \
+to_timestamp(col("date"), "yyyy-MM-dd HH:mm:ss")).show()
+
+spark.sql("""
+SELECT TO_DATE('2021-11-12 17:55:00', 'yyyy-MM-dd HH:mm:ss') as date,
+TO_TIMESTAMP('2021-11-12 17:55:00', 'yyyy-MM-dd HH:mm:ss') as timestamp
+""").show()
+
+
+from pyspark.sql import Row
+
+null_df = sc.parallelize([
+	Row(name="Kang", phone="010-0000-0000", address="Seoul"),
+	Row(name="Shin", phone="010-1111-1111", address=None),
+	Row(name="You", phone=None, address=None)
+]).toDF()
+
+null_df.createOrReplaceTempView("nullTable")
+
+from pyspark.sql.functions import coalesce
+null_df.select(coalesce(col("address"), col("phone"))).show()
+
+spark.sql("""
+SELECT IFNULL(NULL, 'VALUE'), NULLIF('SAME', 'SAME'), NVL(NULL, 'VALUE'), 
+NVL2(NULL, 'VALUE', 'ELSE-VALUE')
+""").show()
+# ifnull : 첫번째 값이 null이면, 두번째 값 리턴
+# nullif : 두 값이 같으면, null 리턴
+# nvl : 첫번째 값이 null이면, 두번째 값 리턴
+# nvl2 : 첫번째 값이 null이 아니면 두번째 값 리턴, null이면 세번째 값 리턴
+
+null_df.count()
+null_df.na.drop().count()
+null_df.na.drop().show()
+# na : null값을 처리하기 위해 DataFrameNaFunction 리턴
+# DataFrameNaFunction : drop, fill, replace
+null_df.na.drop("any").count()
+null_df.na.drop("all").count()
+
+null_df.na.drop("all", subset=["phone"]).show()
+null_df.na.drop("all", subset=["address"]).show()
+null_df.na.drop("all", subset=["phone", "address"]).show()
+null_df.na.drop("any", subset=["phone", "address"]).show()
+
+null_df.na.fill("n/a").show()
+null_df.na.fill("n/a", subset=["name", "address"]).show()
+fill_cols_val = {"phone": "070-7777-7777", "address": "heaven"}
+null_df.na.fill(fill_cols_val).show()
+
+null_df.na.replace(["Seoul"], ["Suwon"], "address").show()
+
+# 구조체 : dataframe 내부에 dataframe
+retails.selectExpr("(DESCRIPTION, INVOICENO) AS complex", "*").show(5, False)
+retails.selectExpr("struct(DESCRIPTION, INVOICENO) AS complex", "*").show(5, False)
+
+from pyspark.sql.functions import struct
+
+complex_df = retails.select(struct("DESCRIPTION", "INVOICENO").alias("complex"))
+complex_df.createOrReplaceTempView("complexDF")
+complex_df.select("complex").show(5, False)
+complex_df.select("complex.DESCRIPTION").show(5, False)
+complex_df.select(col("complex").getField("DESCRIPTION")).show(5, False)
+
+complex_df.select("complex.*").show(5, False)
+complex_df.select("complex").show(5, False)
+
+

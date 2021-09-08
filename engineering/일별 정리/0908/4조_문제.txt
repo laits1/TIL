@@ -1,0 +1,52 @@
+1. DEST_COUNTRY_NAME 컬럼을 기준으로 내림차순, ORIGIN_COUNTRY_NAME,count는 오름차순으로 정렬하세요. (데이터 프레임형식)
+
+2.f2015에서 ORIGIN_COUNTRY_NAME을 DEPARTURE로 이름을 바꾸세요 (데이터 프레임 형식)
+
+3.f2015에서 count가 100이상인 데이터를 구해서 컬럼명 "order_by_volume"에 출력하세요.  (데이터 프레임 형식)
+
+4.flights2015 ORIGIN_COUNTRY_NAME이 C로 끝나는 나라만 출력하시오. (spark.sql 형식)
+
+5.flights2015의 count가 500과 600사이인 데이터를 출력하세요. (spark.sql 형식)
+
+6. flights2015 count의 평균(mean)을 구하세요 (spark.sql형식)
+
+7.모든 dest_country_name을 중복 없이 출력하세요
+
+8.expr을 사용하여 dest의 길이를 10개만 출력하세요
+
+9.INTER 컬럼을 추가하여 국제선여부를 표시해주세요(true/false)
+
+10.COUNT가 100이상인 행만 출력하세요
+
+11.COUNT가 50 이상이고 DEST가 UNITED STATES인 행을 출력하세요
+
+12.DEST는 오름차순, COUNT는 내림차순으로 정렬하세요
+
+13.DEST_COUNTRY_NAME, count를 기준 내림차순으로 정렬해서 출력
+
+14.count가 10 이상인 항목을 내림차순으로 출력
+
+15.count가 2 이하이면서 DEST_COUNTRY_NAME이 malta인 항목을 검색
+
+16.DEST_COUNTRY_NAME이 United States항목의 count의 평균을 출력
+
+17.ORIGIN_COUNTRY_NAME이 France인 항목의 MAX count를 출력
+
+18.count가 평균count 이상인 모든 항목을 출력
+
+19.도착하는 국가의 문자열 개수가 13개미만인 국가의 feature를 출력하세요. (DataFrame 형식으로 데이터 분석)
+
+20.목적지 이름이 13자 미만인 국가들 중 국제선을 출력하시오(DataFrame 형식으로 데이터 분석)
+
+21.ORIGIN_COUNTRY_NAME의 문자열 개수가 8개미만인 국가의 모든 feature를 출력하세요.(DataFrame 형식으로 데이터 분석)
+
+22.ORIGIN_COUNTRY_NAME 을 내림차순, count 는 오름차순으로 정렬해서 출력
+
+23.
+
+24.
+
+
+
+
+
