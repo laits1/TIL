@@ -852,3 +852,133 @@ complex_df.select("complex").show(5, False)
 
 ```
 
+
+
+---
+
+9/9
+
+
+
+```sh
+# vmware만
+vim start.sh
+
+hdfs namenode -format
+hdfs datanode -format
+
+start-dfs.sh
+start-yarn.sh
+
+hdfs dfs -mkdir -p /user/engineer
+hdfs dfs -put data /user/engineer/
+
+chmod 755 start.sh
+./start.sh
+```
+
+
+
+```sh
+retails = spark.read.format("csv").option("header","true").load("data/retails/2010-12-01.csv")
+from pyspark.sql.functions import split
+from pyspark.sql.functions import col
+retails.select(split(col("DESCRIPTION"), " ")).show(5, False)
+
+retails.createOrReplaceTempView("retails")
+spark.sql("SELECT SPLIT(DESCRIPTION, ' ') FROM retails").show(5, False)
+
+from pyspark.sql.functions import size
+retails.select(size(split(col("DESCRIPTION"), " ")).alias("size")).show(5)
+
+retails.select(split(col("DESCRIPTION"), " ").alias("array_col")).selectExpr("array_col[0]").show(5)
+
+from pyspark.sql.functions import array_contains
+retails.select(array_contains(split(col("DESCRIPTION"), " "), "WHITE")).show(5)
+spark.sql("SELECT ARRAY_CONTAINS(SPLIT(DESCRIPTION, ' '), 'WHITE') FROM retails").show(5)
+
+# explode : 배열 타입의 컬럼을 입력 받아 해당 배열 값에 포함된 모든 로우로 반환.(나머지 컬럼은 중복)
+from pyspark.sql.functions import explode
+
+retails.withColumn("splitted", split(col("DESCRIPTION"), " ")).select("DESCRIPTION", "splitted").show(7, False)
+retails.withColumn("splitted", split(col("DESCRIPTION"), " ")).withColumn("exploded", explode(col("splitted"))).show(7, False)
+
+# 맵
+from pyspark.sql.functions import create_map
+retails.select(create_map(col("STOCKCODE"), col("DESCRIPTION")).alias("complex_map")).show(5,False)
+spark.sql("SELECT MAP(STOCKCODE,DESCRIPTION) as complex_map FROM retails WHERE DESCRIPTION IS NOT NULL").show(5, False)
+
+retails.select(create_map(col("STOCKCODE"), col("DESCRIPTION")).alias("complex_map")).selectExpr("complex_map['71053']").show()
+
+retails.select(create_map(col("STOCKCODE"), col("DESCRIPTION")).alias("complex_map")).selectExpr("explode(complex_map)").show()
+
+
+# 사용자 정의 함수
+def power3(value):
+	return value**3
+
+
+from pyspark.sql.functions import udf
+pow3 = udf(power3)
+
+user_def_df = spark.range(5).toDF("nums")
+user_def_df.select(pow3(col("nums")), col("nums")).show()
+
+retails_all = spark.read.format("csv").option("header", "true").option("inferSchema", "true").load("data/retails/*.csv")
+retails_all.createOrReplaceTempView("retailsAll")
+
+from pyspark.sql.functions import count
+retails_all.select(count("STOCKCODE")).show()
+spark.sql("SELECT COUNT(STOCKCODE) FROM retailsALL").show()
+
+from pyspark.sql.functions import countDistinct
+retails_all.select(countDistinct("*").alias("countDistinct")).show()
+spark.sql("SELECT COUNT(DISTINCT(*)) AS countDistinct FROM retailsAll").show()
+
+from pyspark.sql.functions import first, last
+retails_all.select(first("STOCKCODE"), last("STOCKCODE")).show()
+spark.sql("SELECT FIRST(STOCKCODE), LAST(STOCKCODE) FROM retailsAll").show()
+
+from pyspark.sql.functions import min,max
+retails_all.select(min("QUANTITY"), max(
+"QUANTITY")).show()
+spark.sql("SELECT MIN(QUANTITY), MAX(QUANTITY) FROM retailsAll").show()
+
+from pyspark.sql.functions import sum
+retails_all.select(sum("QUANTITY")).show()
+spark.sql("SELECT SUM(QUANTITY) FROM retailsAll").show()
+
+from pyspark.sql.functions import sumDistinct
+retails_all.select(sumDistinct("QUANTITY")).show()
+spark.sql("SELECT SUM(DISTINCT(QUANTITY)) FROM retailsAll").show()
+
+from pyspark.sql.functions import avg, expr
+retails_all.select(count("QUANTITY").alias("countQ"), sum("QUANTITY").alias("sumQ"), avg("QUANTITY").alias("avgQ"), expr("mean(QUANTITY)").alias("meanQ")).selectExpr("sumQ / countQ", "avgQ", "meanQ").show()
+
+# 분산, 표준편차
+from pyspark.sql.functions import var_pop, stddev_pop
+from pyspark.sql.functions import var_samp, stddev_samp
+# var_pop(모분산) /  stddev_pop (모 표준편차)
+# var_samp (표본분산) / stddev_samp (표본 표준편차)
+# 모집단 : 전체, 표본집단 : 일부
+
+retails_all.select(var_pop("QUANTITY").alias("varpop"), var_samp("QUANTITY").alias("varsamp"), stddev_pop("QUANTITY").alias("stddevpop"), stddev_samp("QUANTITY").alias("stddevsamp")).show()
+
+# 공분산, 상관관계
+# corr : 피어슨 상관관계
+# covar_pop : 모집단 공분산
+# covar_samp : 표본 공분산
+from pyspark.sql.functions import corr, covar_pop, covar_samp
+retails_all.select(corr("INVOICENO", "QUANTITY").alias("corr:"),covar_pop("INVOICENO", "QUANTITY").alias("covarpop"), covar_samp("INVOICENO", "QUANTITY").alias("covarsamp")).show(5)
+
+# 집합 agg (aggregate)
+from pyspark.sql.functions import collect_set, collect_list
+# collect_set : 중복 제거 집합
+# collect_list : 중복 있는 집합
+retails_all.agg(collect_set("COUNTRY"), collect_list("COUNTRY")).show()
+spark.sql("SELECT COLLECT_SET(COUNTRY), COLLECT_LIST(COUNTRY) FROM retailsAll").show()
+
+retails_all.groupBy("INVOICENO", "CUSTOMERID").count().show()
+spark.sql("SELECT INVOICENO, CUSTOMERID, count(*) FROM retailsAll GROUP BY INVOICENO, CUSTOMERID").show()
+```
+
