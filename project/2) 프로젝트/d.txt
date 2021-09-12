@@ -1,0 +1,23 @@
+자동차		TELSA :Global X Lithium & Battery Tech ETF'(이하 LIT) IYK
+
+IT		Microsoft : IXN
+
+배송/유통		Amazon : IBUY
+
+호텔		Hilton : BEDZ
+
+노래		Spotify : PBS
+
+의약		화이자 : PJP
+
+반도체		AMD : SOXX
+
+리테일		월마트 : RTH
+
+담배		Altria : MJ
+
+음식		코카콜라 : FTXG
+
+음식		나이키 : IYK
+
+SNS		페이스북 : XLC
