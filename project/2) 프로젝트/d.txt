@@ -1,23 +1,37 @@
-자동차		TELSA :Global X Lithium & Battery Tech ETF'(이하 LIT) IYK
+자동차 TSLA	TELSA :Global X Lithium & Battery Tech ETF'(이하 LIT) IYK
 
-IT		Microsoft : IXN
+IT MSFT		Microsoft : IXN
 
-배송/유통		Amazon : IBUY
+배송/유통	 AMZN	Amazon : IBUY
 
-호텔		Hilton : BEDZ
+호텔 HLT		Hilton : BEDZ
 
-노래		Spotify : PBS
+노래 SPOT	Spotify : PBS
 
-의약		화이자 : PJP
+의약 PFE		화이자 : PJP
 
-반도체		AMD : SOXX
+반도체 AMD	AMD : SOXX
 
-리테일		월마트 : RTH
+리테일 WMT	월마트 : RTH
 
-담배		Altria : MJ
+담배 MO		Altria : MJ
 
-음식		코카콜라 : FTXG
+음식 KO		코카콜라 : FTXG
 
-음식		나이키 : IYK
+소비재 NKE 	나이키 : IYK
 
-SNS		페이스북 : XLC
+SNS FB		페이스북 : XLC
+
+---
+에너지
+재료
+필수 소비재
+산업재
+임의 소비재
+금융
+통신 서비스
+헬스케어
+IT
+부동산
+유틸리티
+
