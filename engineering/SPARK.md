@@ -2,7 +2,7 @@
 
 ```terminal
 sudo apt update -y
-sudo apt upgrade -y 
+sudo apt upgrade -y yh7un
 sudo apt install vim -y
 sudo apt install openssh-server ssh-askpass -y
 
