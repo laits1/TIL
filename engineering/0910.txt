@@ -1,0 +1,162 @@
+
+retails_all = spark.read.option("header", "true").csv("data/retails/*.csv")
+retails_all.createOrReplaceTempView("retailsAll")
+
+retails_all.groupBy("InvoiceNo", "CustomerID").count().show()
+
+
+from pyspark.sql.functions import count, expr
+retails_all.groupBy("InvoiceNo").agg(count("Quantity").alias("quan"), expr("count(Quantity)")).show()
+
+spark.sql("""
+SELECT INVOICENO, AVG(QUANTITY), STDDEV_POP(QUANTITY) FROM retailsAll GROUP BY INVOICENO
+""").show()
+
+retails_all.groupBy("InvoiceNo").agg(expr("avg(Quantity)"), expr("stddev_pop(Quantity)")).show()
+from pyspark.sql.functions import avg, stddev_pop, col
+retails_all.groupBy("InvoiceNo").agg(avg(col("Quantity")), stddev_pop(col("Quantity"))).show()
+
+from pyspark.sql.functions import to_date
+date_df = retails_all.withColumn("date", to_date(col("InvoiceDate"), "yyyy-MM-dd HH:mm:ss"))
+date_df.createOrReplaceTempView("dfWithDate")
+
+# window 함수!
+from pyspark.sql.window import Window
+from pyspark.sql.functions import desc
+window_function = Window.partitionBy("CustomerID", "date").orderBy(desc("Quantity"))\
+.rowsBetween(Window.unboundedPreceding, Window.currentRow)
+
+from pyspark.sql.functions import max
+max_quantity = max(col("Quantity")).over(window_function)
+
+from pyspark.sql.functions import rank, dense_rank
+win_dense_rank = dense_rank().over(window_function)
+win_rank = rank().over(window_function)
+
+date_df.where("CustomerID IS NOT NULL").orderBy("CustomerID").select(col("CustomerID"), col("date"),\
+col("Quantity"), win_rank.alias("quantityRank"), win_dense_rank.alias("quantityDenseRank"),\
+max_quantity.alias("quantityMax")).show()
+
+# 롤업, 큐브, 그루핑 셋
+notnull_df = date_df.drop()
+notnull_df.createOrReplaceTempView("notnullDF")
+
+spark.sql("""
+SELECT CUSTOMERID, STOCKCODE, SUM(QUANTITY) FROM notnullDF
+GROUP BY CUSTOMERID, STOCKCODE ORDER BY CUSTOMERID DESC, STOCKCODE DESC
+""").show()
+
+from pyspark.sql.functions import sum
+rollup_df = notnull_df.rollup("Date", "Country")\
+.agg(sum("Quantity")).selectExpr("Date", "Country", "`sum(Quantity)` as total_quantity").orderBy("Date")
+rollup_df.show()
+
+notnull_df.cube("Date", "Country").agg(sum(col("Quantity"))).select("Date", "Country", "sum(Quantity)")\
+.orderBy("Date").show()
+
+# join
+# 사람 : id, name, 프로그램, 역할
+person = spark.createDataFrame([
+	(1, "shin dongyep", 2, [1]),
+	(2, "seo janghun", 3, [2]),
+	(3, "you jaeseok", 1, [1, 2]),
+	(4, "kang hodong", 0, [0])
+]).toDF("id", "name", "program", "job")
+
+# 프로그램 : id, 방송사, 프로그램이름
+program = spark.createDataFrame([
+	(1, "MBC", "why play"),
+	(2, "KBS", "good song"),
+	(3, "SBS", "bad duck"),
+	(4, "JTBC", "together kick")
+]).toDF("id", "broadcaster", "program")
+
+# 직업 : id, 역할
+job = spark.createDataFrame([
+	(1, "main mc"),
+	(2, "member")
+]).toDF("id", "job")
+
+
+person.createOrReplaceTempView("person")
+program.createOrReplaceTempView("program")
+job.createOrReplaceTempView("job")
+
+# join (= inner join)
+join_condition = person['program'] == program['id']
+person.join(program, join_condition).show()
+
+# inner join
+person.join(program, person.program == program.id, 'inner').show()
+
+# outer join
+person.join(program, join_condition, 'outer').show()
+
+# left_outer join
+person.join(program, join_condition, 'left_outer').show()
+
+# right_outer join
+person.join(program, person.program == program.id, 'right_outer').show()
+
+# left_semi join : 조인하는 오른쪽 테이블과 매칭이 되는 로우만 출력
+person.join(program, join_condition, 'left_semi').show()
+# left_anti join : 조인하는 오른쪽 테이블과 매칭이 되지 않는 로우만 출력
+person.join(program, join_condition, 'left_anti').show()
+
+# cross join
+person.join(program, join_condition, 'cross').show()
+person.crossJoin(program).show()
+
+# 복합 데이터 타입 조인
+# 컬럼 이름이 겹치면 에러난다. 이름 변경 후 join하자
+person.withColumnRenamed("id", "num").withColumnRenamed("job", "role")\
+.join(job, expr("array_contains(role, id)")).show()
+
+# 서브쿼리를 사용하여, SBS 방송국에서 프로그램을 맡고 있는 사람들을 출력하자.
+spark.sql("""
+SELECT *
+FROM person
+WHERE program = (SELECT ID FROM program WHERE broadcaster = 'SBS')
+""").show()
+
+
+
+# streaming
+vim streaming_test.py
+
+from pyspark import SparkContext
+from pyspark.streaming import StreamingContext
+
+sc = SparkContext("local[2]", "NetworkWordCount")
+ssc = StreamingContext(sc, 5)
+
+lines = ssc.socketTextStream("localhost", 9999)
+
+words = lines.flatMap(lambda x: x.split(" "))
+pairs = words.map(lambda x: (x, 1))
+
+wordCounts = pairs.reduceByKey(lambda x, y: x + y)
+wordCounts.pprint()
+
+ssc.start()
+ssc.awaitTermination()
+
+# 다른 터미널
+nc -lk 9999
+# 이전 터미널
+spark-submit streaming_test.py
+
+
+
+
+
+
+
+
+# spark MLlib
+df = spark.read.json("data/simple-ml/ml.json")
+
+
+
+
+
