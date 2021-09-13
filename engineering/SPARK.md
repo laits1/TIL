@@ -982,3 +982,12 @@ retails_all.groupBy("INVOICENO", "CUSTOMERID").count().show()
 spark.sql("SELECT INVOICENO, CUSTOMERID, count(*) FROM retailsAll GROUP BY INVOICENO, CUSTOMERID").show()
 ```
 
+
+
+
+
+9/13
+
+```sh
+```
+
