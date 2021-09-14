@@ -1,0 +1,4 @@
+ssh -i "C:\Users\SDG\Desktop\엔지니어링_도쿄\de-c2(tokyo).pem" ubuntu@35.76.178.23
+ssh -i C:\Users\SDG\Desktop\엔지니어링_도쿄\de-c2(tokyo).pem ubuntu@172.31.16.110
+
+multi0825!

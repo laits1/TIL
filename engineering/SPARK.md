@@ -986,8 +986,102 @@ spark.sql("SELECT INVOICENO, CUSTOMERID, count(*) FROM retailsAll GROUP BY INVOI
 
 
 
-9/13
+9/14
 
 ```sh
+pyspark
+
+df = spark.read.json("data/simple-ml/")
+df.show()
+
+from pyspark.ml.feature import RFormula
+supervised = RFormula(formula="lab ~ . + color:value1 + color:value2")
+# ~ 	분리
+# +		연결
+# -		삭제
+# :		상호작용 (곱셈)
+# .		모든 컬럼
+
+fitted_rf = supervised.fit(df)
+prepared_df = fitted_rf.transform(df)
+prepared_df.show(5, False)
+
+train, test = prepared_df.randomSplit([0.7, 0.3])
+
+from pyspark.ml.classification import LogisticRegression
+lr = LogisticRegression(labelCol = "label", featuresCol = "features")
+# hyper parameter
+print(lr.explainParams())
+
+fitted_lr = lr.fit(train)
+fitted_lr.transform(train).select("label", "prediction").show()
+
+# pipline
+train, test = df.randomSplit([0.7, 0.3])
+rForm = RFormula()
+lr = LogisticRegression().setLabelCol("label").setFeaturesCol("features")
+
+
+from pyspark.ml import Pipeline
+stages = [rForm, lr]
+pipeline = Pipeline().setStages(stages)
+
+from pyspark.ml.tuning import ParamGridBuilder
+params = ParamGridBuilder().addGrid(rForm.formula, ["lab ~ . + color:value1", "lab ~ . + color:value1 + color:value2"]).addGrid(lr.elasticNetParam, [0.0, 0.5, 1.0]).addGrid(lr.regParam, [0.1, 0.2]).build()
+
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+evaluator = BinaryClassificationEvaluator().setMetricName("areaUnderROC").setRawPredictionCol("prediction").setLabelCol("label")
+
+# 검증
+from pyspark.ml.tuning import TrainValidationSplit
+tvs = TrainValidationSplit().setTrainRatio(0.75).setEstimatorParamMaps(params).setEstimator(pipeline).setEvaluator(evaluator)
+
+#학습
+tvsFitted = tvs.fit(train)
+
+evaluator.evaluate(tvsFitted.transform(test))
+
+
+```
+
+
+
+```sh
+spark
+
+csv_file = spark.read.format("csv").option("header","true").load("data/flights/csv/2010-summary.csv")
+csv_file2 = spark.read.option("header", "true").csv("data/retails/2010-12-01.csv")
+# 저장
+csv_file.write.format("csv").mode("overwrite").save("/tmp/csv")
+# mode : append, overwrite, error/errorifexists, ignore
+# 저장된거 확인
+새로운 터미널
+cd /tmp # aws
+hdfs dfs -ls /tmp/ # ubuntu
+
+csv_new = spark.read.format("csv").option("header", "true").csv("/tmp/csv/part-00000-*.csv")
+
+# json 파일 가져오기
+json_file = spark.read.format("json").load("data/flights/json/2011-summary.json")
+json_file.write.format("json").mode("overwrite").save("/tmp/json")
+
+# 확인
+hdfs dfs -cat /tmp/json/*.json
+
+# 그 외
+# parquet : spark 컬럼 기반 데이터 저장 방식
+# orc : hadoop 기반 데이터 저장 방식
+# db : hive, oracle, mysql, mongodb, cassandra, hbase
+
+pip install pyspark
+
+vim spark_app.py
+from pyspark.sql import SparkSession
+if __name__ == "__main__":
+	spark = SparkSession.builder.master("local").appName("sum").getOrCreate()
+	print(spark.range(1, 1001).selectExpr("sum(id)").collect())
+
+
+spark-submit spark_app.py
 ```
 
