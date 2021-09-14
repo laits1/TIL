@@ -2,7 +2,7 @@
 
 ```terminal
 sudo apt update -y
-sudo apt upgrade -y yh7un
+sudo apt upgrade -y
 sudo apt install vim -y
 sudo apt install openssh-server ssh-askpass -y
 
@@ -101,7 +101,16 @@ hdfs namenode -format
 hdfs datanode -format
 start-dfs.sh 
 start-yarn.sh
-jps # 6개나옴
+jps # 6개나옴 
+
+496 ResourceManager
+32150 NameNode
+32343 DataNode
+32649 SecondaryNameNode
+698 NodeManager
+1103 Jps
+
+
 hdfs dfsadmin -report # Live datanodes(1) 뜬다.
 
 # stop-all.sh  sh 전부끄기
