@@ -448,6 +448,7 @@ flights2010 = spark.read.csv("data/flights/csv/2010-summary.csv")
 flights2010.printSchema()
 flights2010.take(5)
 
+
 #
 flights2010 = spark.read.option("header","true").csv("data/flights/csv/2010-summary.csv")
 flights2010.printSchema()
