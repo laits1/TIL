@@ -122,3 +122,62 @@ db.inventory.insert_many([
      "status": "A"}])
 ```
 
+
+
+9.15
+
+```sh
+db.score.insertMany([
+  {"name": "홍길동", "kor":90, "eng":80, "math":98, "test":"midterm"},
+  {"name": "이순신", "kor":100, "eng":100, "math":76, "test":"midterm"},
+  {"name": "김선달", "kor":80, "eng":55, "math":64, "test":"midterm"},
+  {"name": "강호동", "kor":70, "eng":67, "math":89, "test":"midterm"},
+  {"name": "유재석", "kor":60, "eng":80, "math":77, "test":"midterm"},
+  {"name": "신동엽", "kor":100, "eng":75, "math":73, "test":"midterm"},
+  {"name": "조세호", "kor":75, "eng":100, "math":97, "test":"midterm"},
+])
+
+db.score.find()
+
+db.score.aggregate(
+	{$match: {"kor":{$gte: 80}}}
+)
+
+db.score.aggregate(
+	{$group:{_id:"$test", average: {$avg:"$kor"}}}
+)
+
+db.score.aggregate(
+	{$project: {"_id":0, "name":1, "eng":1}}
+)
+
+db.score.aggregate(
+	{$match: {"test": "midterm"}},
+	{$project : {"name":1, "eng":1, "_id":0}},
+	{$group : {"_id":"test", "average":{$avg:"$eng"}}}
+)
+
+// test가 midterm인 document들의 이름, 국어, 영어, '국어와 영어의 합'을 출력하자
+
+// map 함수
+function myMap(){
+	emit(this.score, {name: this.name, kor: this.kor, eng: this.eng, test: this.test});
+}
+// reduce 함수
+function myReduce(key, values) {
+	var result = {name:new Array(), kor:new Array(), eng:new Array(), total: new Array()};
+	values.forEach(function(val){
+		if (val.test='midterm') {
+			result.name += val.name + " ";
+			result.kor += val.kor + " ";
+			result.eng += val.eng + " ";
+			result.total += (val.kor + val.eng) + " ";
+		}
+	});
+	return result;
+}
+
+db.score.mapReduce(myMap, myReduce, {out:{replace:"myResult"}});
+db.myResult.find();
+```
+
