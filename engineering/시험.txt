@@ -1,0 +1,67 @@
+AI :
+ML :
+DL :
+
+
+지도학습
+
+비지도학습 
+
+RDB
+
+SQL
+- DDL : create alter drop
+- DML : select insert
+- DCL : commit rollboack / grant revoke
+
+
+빅데이터 
+Volume : 빅데이터 크기
+Variety : 빅데이터 형태가 다양하다
+Velocity : 속도
+Veraciry : 신뢰성
+Visualization : 시각화
+
+--
+
+hadoop
+spark?
+
+하둡 
+namenode 
+메타데이터 관리
+데이터노드 모니터링
+블록 관리
+클라이언ㅌ 
+secondary nameNode
+?
+datanode
+데이터 저장
+
+하둡 모듈
+--
+spark모듈
+spark sql`
+spark stream`
+mlib
+graphx
+spark core`
+
+스파크에서 사용할수있는 타입
+parquet : spark 컬럼기반 데이터 저장 ㅂ아식
+drc : 하둡 기반 데이터 저장 방식
+db : hive, oracle, 
+
+col이 무엇인지
+
+table만드는게 무엇인지
+reduceByKey : 키를 기준으로 밸류를 연산
+
+
+mapValues
+
+
+stats = describe
+
+
+
