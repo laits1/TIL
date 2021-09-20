@@ -1,1 +1,10 @@
-tesla
+Microsoft
+Amazon
+Spotify
+Pfizer
+AMD
+walmart
+Altria
+Coca cola
+Nike
+Facebook

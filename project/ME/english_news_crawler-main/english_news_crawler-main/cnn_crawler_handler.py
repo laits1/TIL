@@ -35,7 +35,7 @@ class CNNcrawler:
         driver = self.set_driver(driver_path)
         url = f"https://edition.cnn.com/search/?size=10&q={q}"
         # 아래 range를 변형해서 더 많은 데이터를 수집할 수 있음
-        for i in range(1, 2):
+        for i in range(1, 150):
             # 처음일 때와 아닐 때 url 값이 바뀌어서 flag를 이용해 변환
             if i == 1:
                 url = url + "&page=" + str(i)
