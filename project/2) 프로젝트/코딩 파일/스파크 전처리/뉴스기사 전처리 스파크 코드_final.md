@@ -25,6 +25,7 @@ hdfs dfs -put ./BeautifulAnts/data/Article_score_csv/Walmart_scda.csv Walmart.cs
 ticker = ['ALTRIA','Amazon','AMD','Cocacola','Facebook','Microsoft', 'NIKE', 'PFIZER', 'Spotify', 'TESLA', 'Walmart']
 from pyspark.sql.functions import to_timestamp
 from pyspark.sql.functions import *
+from pyspark.sql import functions
 
 # 날짜 형식
     
@@ -57,7 +58,22 @@ for company in ticker :
     # 컬럼명 변경
     globals()['{}_at'.format(company)] = globals()['{}_at'.format(company)].withColumnRenamed('avg(sent)', 'sent')
     
-    #globals()['{}_at'.format(company)].show(globals()['{}_at'.format(company)].count())
-	
+    # 티커 컬럼 추가
+    globals()['{}_at'.format(company)] = globals()['{}_at'.format(company)].withColumn("Ticker", functions.lit(company))
+
+    # DB에 저장
+user='root'
+password='1234'
+url='jdbc:mysql://localhost:3306/BeautifulAnts'
+driver='com.mysql.cj.jdbc.Driver'
+dbtable = 'Article'    
+
+for company in ticker :
+    globals()['{}_at'.format(company)].write.jdbc(url,dbtable,'append',properties={'driver':driver,'user':user,'password':password})
+    
+
 ```
 
+
+
+## 
