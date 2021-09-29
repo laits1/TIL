@@ -271,7 +271,53 @@ zeppelin-daemon.sh stop
 
 ```
 
+---
 
+### mySQL 재설치
+
+```python
+MYSQL - 설치 & 재설치
+mysql-server 서버 설치과정에서 많은 어려움이 있었다.
+아래 명령어를 통해 재설치 할수 있다.
+1, 2를 통해 설치되어 있는 mysql을 삭제
+3, 4, 5, 6 과정을 통해 mysql삭제후 남아 있는 dir을 삭제하는 것이다.
+7 과정에서 깨끗해진 환경에서 설치하면 된다.
+
+나는 1,2,7 과정에서 sudo 키워드 없이 실행했을 때 
+권한에러 발생으로 'sudo' 키워드를 추가해서 실행했다.
+정상적으로 삭제 후 재설치 할수 있었다.
+3,4,5,6에서 파일을 삭제 할 때는 sudo를 사용하지 않았다.
+1
+apt-get purge mysql-server
+or
+sudo apt-get purge mysql-server
+
+2
+apt-get purge mysql-common
+or
+sudo apt-get purge mysql-common
+
+3
+rm -rf /var/log/mysql
+
+4
+rm -rf /var/log/mysql.*
+
+5
+rm -rf /var/lib/mysql
+
+6
+rm -rf /etc/mysql
+
+7
+apt-get install mysql-server --fix-missing --fix-broken
+or
+sudo apt-get install mysql-server --fix-missing --fix-broken
+```
+
+
+
+---
 
 ### MySQL
 
