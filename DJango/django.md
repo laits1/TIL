@@ -5,15 +5,21 @@
 **0. 설치**
 
 ```terminal
-# virtual environment (venv) 생성
-python -m venv pyweb
+1. virtual environment (venv) 생성
+python -m venv venv
 
-# venv 실행
-source pyweb/bin/activate
-# window : .\pyweb\Scripts\activate.bat
+2. venv 실행
+source venv/Scripts/activate
 
-# django module 설치
+3. django module 설치
 pip install django
+
+4. 다른 PC에서 사용을 위해 pip list 저장
+pip freeze > requirements.txt
+
+5. 다른 PC에서 pip설치할 때 (1~2 진행후)
+pip install -r requirements.txt
+
 
 # terminal 위치 확인! (${django project folder} 로 이동)
 # django-admin 이용해서 프로젝트 생성
@@ -25,6 +31,8 @@ python manage.py runserver
 
 # port 변경하고 싶을 때 (0: 0.0.0.0을 의미)
 python manage.py runserver localhost:8888
+
+
 
 ```
 

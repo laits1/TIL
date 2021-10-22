@@ -1,4 +1,4 @@
-#!c:\users\sdg\documents\github\til\project\3) 파이널 프로젝트\코드 진행중\데이터 엔지니어\3) 장고\venv\scripts\python.exe
+#!c:\users\sdg\33\문서\til\til\project\3) 파이널 프로젝트\코드 진행중\데이터 엔지니어\3) 장고\venv\scripts\python.exe
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 
