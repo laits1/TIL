@@ -25,5 +25,3 @@ airflow로 수집적재 자동화?
 
 DB보단 file interface
 
-아
-
