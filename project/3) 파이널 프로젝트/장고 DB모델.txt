@@ -1,0 +1,17 @@
+1.
+main/models.py에서 모델생성
+
+2.
+터미널에서 python manage.py makemigrations
+python manage.py migrate
+
+하면 db.sqlite3가 생성된다. (테이블을 생성하는거)
+
+3.
+sqlite에 넣을 dump 데이터를 만들기위해서 csv to json 하는 파이썬 코드 작성
+
+csv_to_json.py 작성하면 csv파일이 json 되고
+json 파일을 main/fixtures 안에 저장
+터미널에 python manage.py loaddata (json파일이름)
+
+4.
