@@ -1,0 +1,1 @@
+movies.csv에 없는 imdb번호가 ratings있다 그것을 삭제.
